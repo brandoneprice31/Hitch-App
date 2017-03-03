@@ -14,8 +14,8 @@ import CoreLocation
 class API {
     
     // ROOT URL
-    //static let rootURLString : String = "http://127.0.0.1:8000/app/"
-    static let rootURLString : String = "https://sheltered-citadel-17296.herokuapp.com/app/"
+    static let rootURLString : String = "http://127.0.0.1:8000/app/"
+    //static let rootURLString : String = "https://sheltered-citadel-17296.herokuapp.com/app/"
     
     
     
