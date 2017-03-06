@@ -1294,7 +1294,7 @@
                                             <constraint firstAttribute="height" constant="75" id="gOV-zt-DFw"/>
                                             <constraint firstAttribute="width" constant="75" id="rZP-Aa-5xd"/>
                                         </constraints>
-                                        <state key="normal" backgroundImage="wheel-icon"/>
+                                        <state key="normal" backgroundImage="car"/>
                                         <connections>
                                             <action selector="driveButtonClicked:" destination="lUg-48-W4e" eventType="touchUpInside" id="6b4-oU-y8Y"/>
                                         </connections>
@@ -3255,6 +3255,7 @@
         <image name="5-stars" width="300" height="80"/>
         <image name="boston" width="533" height="266"/>
         <image name="camera" width="616" height="616"/>
+        <image name="car" width="188" height="188"/>
         <image name="default-profile" width="176" height="176"/>
         <image name="hitch-icon" width="188" height="237"/>
         <image name="hitch-logo" width="188" height="188"/>

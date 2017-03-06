@@ -42,7 +42,7 @@ class LocationSearchVC: UIViewController, UITextFieldDelegate, UITableViewDelega
         if isHiking {
             imageView.image = UIImage(named: "hitch-logo")
         } else {
-            imageView.image = UIImage(named: "wheel-icon")
+            imageView.image = UIImage(named: "car")
         }
         
         // Search Completer configuration.
