@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         //CoreDataAuthentication.deleteAllUsers()
         
         // Log the user out for debugging purposes.
-        User.logOutCurrentUser()
+        //User.logOutCurrentUser()
         
         // Delete all cached data for debugging purposes.
         //UserDefaults().removePersistentDomain(forName: Bundle.main.bundleIdentifier!)

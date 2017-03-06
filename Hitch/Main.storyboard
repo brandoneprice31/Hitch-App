@@ -528,25 +528,13 @@
                                             <action selector="settingsButtonClicked:" destination="lUg-48-W4e" eventType="touchUpInside" id="eu3-i1-L3V"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="2" translatesAutoresizingMaskIntoConstraints="NO" id="4zf-Ub-X8D">
-                                        <rect key="frame" x="97.5" y="8" width="125" height="77"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="125" id="ncv-sg-ENK"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="40"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.098495922979999997" green="0.17883136869999999" blue="0.26193091270000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="iIN-mP-icf" secondAttribute="bottom" constant="5" id="3kN-yO-e90"/>
-                                    <constraint firstItem="4zf-Ub-X8D" firstAttribute="top" secondItem="kCr-ew-4Yt" secondAttribute="topMargin" id="GEz-au-Qb7"/>
                                     <constraint firstItem="ukq-qr-v2i" firstAttribute="bottom" secondItem="iIN-mP-icf" secondAttribute="bottom" id="Rwx-pm-OIV"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="ukq-qr-v2i" secondAttribute="trailing" id="g1v-L7-N2b"/>
-                                    <constraint firstAttribute="bottom" secondItem="4zf-Ub-X8D" secondAttribute="bottom" id="g55-6P-NkN"/>
                                     <constraint firstItem="iIN-mP-icf" firstAttribute="leading" secondItem="kCr-ew-4Yt" secondAttribute="leadingMargin" id="jXB-K3-1SW"/>
-                                    <constraint firstItem="4zf-Ub-X8D" firstAttribute="centerX" secondItem="kCr-ew-4Yt" secondAttribute="centerX" id="tBK-hy-9y9"/>
                                     <constraint firstAttribute="height" constant="85" id="xyL-i3-pFi"/>
                                 </constraints>
                             </view>

@@ -28,24 +28,17 @@ class API {
         let json : [String : String] = ["email" : email]
         
         // Perform request.
-        API.performRequest(requestType: "POST", urlPath: "users/", json: json, token: nil, completionHandler: {
-            (response, json) in
+        API.performRequest(requestType: "POST", urlPath: "users/check/", json: json, token: nil, completionHandler: {
+            (response, _) in
             
-            // Default in case there is any other response than 409 and 404.
-            var doesExist = false
-            var urlResponse = URLResponse.Error
-            
-            // Conflict means the user exists.
-            if response.statusCode == 409 {
-                doesExist = true
-                urlResponse = URLResponse.Success
-            // Not found means the user doesn't exist.
-            } else if response.statusCode == 404 {
-                doesExist = false
-                urlResponse = URLResponse.Success
+            switch response.statusCode {
+            case 409:
+                completionHandler(URLResponse.Success, true)
+            case 404:
+                completionHandler(URLResponse.Success, false)
+            default:
+                completionHandler(URLResponse.Error, false)
             }
-            
-            completionHandler(urlResponse, doesExist)
         })
     }
     
@@ -61,11 +54,11 @@ class API {
                                       "password" : password]
         
         // Perform request.
-        API.performRequest(requestType: "POST", urlPath: "users/", json: json, token: nil, completionHandler: {
-            (httpResponse, json) in
+        API.performRequest(requestType: "POST", urlPath: "users/login/", json: json, token: nil, completionHandler: {
+            (response, json) in
             
-            if httpResponse.statusCode == 202 {
-                
+            switch response.statusCode {
+            case 202:
                 var decodedImage : UIImage? = nil
                 
                 let json_user_data = json as! [String: Any]
@@ -76,16 +69,18 @@ class API {
                     decodedImage = UIImage(data: decodedData! as Data)
                 }
                 
+                print("\(json_user_data)")
+                
                 let user = User(id: json_user_data["id"] as! Int, firstName: (json_user_data["first_name"] as? String)!, lastName: (json_user_data["last_name"] as? String)!, email: json_user_data["email"] as! String, token: (json_user_data["token"]
                     as? String)!, profileImage: decodedImage)
                 
                 // Login the user.
                 User.loginUser(user: user)
                 completionHandler(URLResponse.Success, user)
-            } else {
-                completionHandler(URLResponse.WrongCredentials, nil)
+
+            default:
+                 completionHandler(URLResponse.WrongCredentials, nil)
             }
-            
         })
     }
     
@@ -97,14 +92,15 @@ class API {
     class func logOutUser (token: String, completionHandler: @escaping (URLResponse) -> Void) {
         
         // Send request.
-        API.performRequest(requestType: "GET", urlPath: "log-out/", json: nil, token: token, completionHandler: {
+        API.performRequest(requestType: "GET", urlPath: "users/log-out/", json: nil, token: token, completionHandler: {
             (response, json) in
             
-            if response.statusCode != 200 {
-                completionHandler(URLResponse.Error)
-            } else {
+            switch response.statusCode {
+            case 200:
                 User.logOutCurrentUser()
                 completionHandler(URLResponse.Success)
+            default:
+                completionHandler(URLResponse.Error)
             }
         })
     }
@@ -130,24 +126,22 @@ class API {
         }
         
         // Perform request.
-        API.performRequest(requestType: "POST", urlPath: "users/", json: json, token: nil, completionHandler: {
-            (httpResponse, json) in
+        API.performRequest(requestType: "POST", urlPath: "users/create/", json: json, token: nil, completionHandler: {
+            (response, json) in
             
-            if httpResponse.statusCode == 201 {
-                
+            switch response.statusCode {
+            case 201:
                 // Build user object.
                 var user : User? = nil
                 
                 if json != nil {
                     
                     let json_user_data = json as! [String: Any]
-                    
                     user = User(id: json_user_data["id"] as! Int, firstName: (json_user_data["first_name"] as? String)!, lastName: (json_user_data["last_name"] as? String)!, email: json_user_data["email"] as! String, token: (json_user_data["token"] as? String)!, profileImage: nil)
                 }
                 
                 completionHandler(URLResponse.Success, user)
-                
-            } else {
+            default:
                 completionHandler(URLResponse.WrongCredentials, nil)
             }
         })
@@ -161,13 +155,11 @@ class API {
     class func getUsersDrives (token: String, completionHandler: @escaping (URLResponse, [Drive]?) -> Void) {
         
         // Perform request.
-        API.performRequest(requestType: "GET", urlPath: "user-drives/", json: nil, token: token, completionHandler: {
+        API.performRequest(requestType: "GET", urlPath: "drives/all/", json: nil, token: token, completionHandler: {
             (response, jsonList) in
             
-            if response.statusCode != 200 {
-                // Return error.
-                completionHandler(URLResponse.Error, nil)
-            } else {
+            switch response.statusCode {
+            case 200:
                 // Return drive objects.
                 let json_drive_data = jsonList as! [[String: Any]]
                 
@@ -179,6 +171,9 @@ class API {
                 
                 // Return drive list.
                 completionHandler(URLResponse.Success, driveList)
+            default:
+                // Return error.
+                completionHandler(URLResponse.Error, nil)
             }
         })
     }
@@ -193,7 +188,7 @@ class API {
         let json = drive.getJSON()
         
         // Perform request.
-        API.performRequest(requestType: "POST", urlPath: "user-drives/", json: json, token: token, completionHandler: {
+        API.performRequest(requestType: "POST", urlPath: "drives/all/", json: json, token: token, completionHandler: {
             (response, _) in
             
             if response.statusCode != 201 {
@@ -212,7 +207,7 @@ class API {
     class func getUsersHitches(token: String, completionHandler: @escaping (URLResponse, [Hitch]?) -> Void) {
         
         // Perform request.
-        API.performRequest(requestType: "GET", urlPath: "hitches/", json: nil, token: token, completionHandler: {
+        API.performRequest(requestType: "GET", urlPath: "hitches/all/", json: nil, token: token, completionHandler: {
             (response, jsonList) in
             
             if response.statusCode != 200 {
@@ -246,7 +241,7 @@ class API {
         let json : [String : Any] = hitch.getJSON()
         
         // Perform request.
-        API.performRequest(requestType: "POST", urlPath: "hitches/", json: json, token: hitch.user.token, completionHandler: {
+        API.performRequest(requestType: "POST", urlPath: "hitches/all/", json: json, token: hitch.user.token, completionHandler: {
             (response, json) in
             
             // Handle the response.
@@ -274,7 +269,7 @@ class API {
                                          "start_date_time"   : startDateTime.getJSONRepresentation(),
                                          "end_date_time"     : endDateTime.getJSONRepresentation()]
         
-        API.performRequest(requestType: "POST", urlPath: "drive-search/", json: json, token: token, completionHandler: {
+        API.performRequest(requestType: "POST", urlPath: "drives/search/", json: json, token: token, completionHandler: {
             (response, jsonList) in
             
             if response.statusCode != 200 {
