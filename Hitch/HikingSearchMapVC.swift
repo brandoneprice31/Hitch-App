@@ -33,8 +33,8 @@ class HikingSearchMapVC: UIViewController, MGLMapViewDelegate {
         startLocationButton.setTitle(startLocation.subtitle, for: .normal)
         startLocationButton.contentVerticalAlignment = .bottom
         //startLocationButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        let starttextRange = NSMakeRange(0, (startLocation.subtitle?.characters.count)!)
-        let startattributedText = NSMutableAttributedString(string: startLocation.subtitle!)
+        let starttextRange = NSMakeRange(0, (startLocation.subtitle.characters.count))
+        let startattributedText = NSMutableAttributedString(string: startLocation.subtitle)
         startattributedText.addAttribute(NSUnderlineStyleAttributeName , value: NSUnderlineStyle.styleSingle.rawValue, range: starttextRange)
         startLocationButton.titleLabel?.attributedText = startattributedText
         startLocationButton.titleLabel?.minimumScaleFactor = 0.75
@@ -42,8 +42,8 @@ class HikingSearchMapVC: UIViewController, MGLMapViewDelegate {
         endLocationButton.setTitle(endLocation.subtitle, for: .normal)
         endLocationButton.contentVerticalAlignment = .bottom
         //endLocationButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        let endtextRange = NSMakeRange(0, (endLocation.subtitle?.characters.count)!)
-        let endattributedText = NSMutableAttributedString(string: endLocation.subtitle!)
+        let endtextRange = NSMakeRange(0, (endLocation.subtitle.characters.count))
+        let endattributedText = NSMutableAttributedString(string: endLocation.subtitle)
         endattributedText.addAttribute(NSUnderlineStyleAttributeName , value: NSUnderlineStyle.styleSingle.rawValue, range: endtextRange)
         endLocationButton.titleLabel?.attributedText = endattributedText
         endLocationButton.titleLabel?.minimumScaleFactor = 0.75
@@ -65,7 +65,8 @@ class HikingSearchMapVC: UIViewController, MGLMapViewDelegate {
     func configureMapView() {
         
         // Draw on map.
-        Mapping.DrawDriveOnMapView(mapView: mapView, drive: Drive(driverFirstName: "", driverLastName: "", driverID: 0, start: startLocation, end: endLocation, startDateTime: DateTime(), endDateTime: DateTime(), repeatWeekDays: [], polyLine: nil, orRoute: route))
+        let drive = Drive(id: 0, driver: User.getCurrentUser()!, start: startLocation, end: endLocation, startDateTime: DateTime(), endDateTime: DateTime(), repeatedWeekDays: [], polyline:  MGLPolyline.MKPolylineToMGLPolyine(mkPolyline: self.route.polyline), hitches: [])
+        Mapping.DrawDriveOnMapView(mapView: mapView, drive: drive, hitch: nil)
         
         // Configure the search button.
         searchButton.layer.borderColor = navyColor.cgColor

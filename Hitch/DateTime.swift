@@ -25,7 +25,7 @@ class DateTime {
     var hour : Int = 0
     var minute : Int = 0
     var weekDay : Int = 0
-    var date : Date
+    var date : Date = Date()
     
     class func cal () -> Calendar {
         var cal = Calendar(identifier: Calendar.Identifier.gregorian)
@@ -39,6 +39,10 @@ class DateTime {
     static let shortWeekDays = DateFormatter().shortWeekdaySymbols!
     static let shortestWeekDays = DateFormatter().veryShortWeekdaySymbols
     static let currentDateTime = DateTime(date: Date())
+    
+    init () {
+        
+    }
     
     // String initializer.
     init (format: String, dateString: String) {
@@ -112,10 +116,6 @@ class DateTime {
         self.minute = components.minute!
         self.weekDay = components.weekday!
         self.date = date
-    }
-    
-    init () {
-        self.date = Date()
     }
     
     func storeDate () {

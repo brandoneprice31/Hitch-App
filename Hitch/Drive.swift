@@ -15,107 +15,43 @@ import CoreData
 // Class for storing routes.
 class Drive {
     
-    
-    // Require Properties.
+    // ID
+    var id : Int = 0
     
     // Driver
-    var firstName : String
-    var lastName : String
-    var profPicName : String
-    var driverID : Int
+    var driver : User = User()
     
     // Routing
-    var start : Place
-    var end : Place
-    var startDateTime : DateTime
-    var endDateTime : DateTime
-    var repeatWeekDays : [Int]
-    var polyLine : MGLPolyline?
+    var start : Place = Place()
+    var end : Place = Place()
+    var startDateTime : DateTime = DateTime()
+    var endDateTime : DateTime = DateTime()
+    var repeatedWeekDays : [Int] = [Int]()
+    var polyline : MGLPolyline = MGLPolyline()
     
-    // Pricing
-    var basePrice : Double = 0
+    // Hitches
+    var hitches : [Hitch] = [Hitch]()
     
     
-    // Optional Properties.
+    // Optional properties
+    var estimagedPickUpDateTime : DateTime? = nil
     
-    // API Data
-    var id : Int?
     
-    // Pick-Up Route
-    var hitchedStartDateTime : DateTime? = nil
-    var pickingUpHiker : Bool = false
-    var pickUpLocation : Place? = nil
-    var dropOffLocation : Place? = nil
-    var pickUpTime : DateTime? = nil
-    var dropOffTime : DateTime? = nil
-    var pickUpPolyLines = [MGLPolyline]()
-    
-    // Hiker
-    var hikerID : Int? = nil
-    var hikerFirstName : String? = nil
-    var hikerLastName : String? = nil
-
-    // Extra Pricing
-    var extraTimePrice : Double = 0
-    
-    // Canceled Dates
-    var canceledDates = [DateTime]()
-
+    init () {
+        
+    }
     
     // Filled init for mkroute.
-    init (driverFirstName: String, driverLastName: String, driverID : Int, start: Place, end: Place, startDateTime: DateTime, endDateTime: DateTime, repeatWeekDays: [Int], polyLine: MGLPolyline?, orRoute: MKRoute?) {
-
-        self.driverID = driverID
-        self.firstName = driverFirstName
-        self.lastName = driverLastName
-        self.profPicName = "\(driverID)_profile_pic.png"
+    init (id : Int, driver : User, start: Place, end: Place, startDateTime : DateTime, endDateTime : DateTime, repeatedWeekDays : [Int], polyline: MGLPolyline, hitches : [Hitch]) {
+        self.id = id
+        self.driver = driver
         self.start = start
         self.end = end
         self.startDateTime = startDateTime
         self.endDateTime = endDateTime
-        self.repeatWeekDays = repeatWeekDays
-        
-        if polyLine == nil &&  orRoute == nil {
-            self.polyLine = nil
-        }
-        else if polyLine == nil {
-            self.polyLine = Mapping.MKPolylineToMGLPolyine(mkPolyline: (orRoute?.polyline)!)
-        } else {
-            self.polyLine = polyLine!
-        }
-    }
-    
-    // Configure optional properties.
-    func configureOptionalProperties (driveID: Int?, pickingUpHiker: Bool, pickUpLocation: Place?, dropOffLocation: Place?, pickUpTime: DateTime?, dropOffTime: DateTime?, pickUpPolylines: [MGLPolyline]?, hikerID: Int?, hikerFirstName: String?, hikerLastName: String?, extraTimePrice: Double, canceledDates: [DateTime], hitchedStartDateTime: DateTime?) {
-        
-        // Core Data
-        self.id = driveID
-        
-        // Pick-Up Route
-        self.hitchedStartDateTime = hitchedStartDateTime
-        self.pickingUpHiker = pickingUpHiker
-        self.pickUpLocation = pickUpLocation
-        self.dropOffLocation = dropOffLocation
-        self.pickUpTime = pickUpTime
-        self.dropOffTime = dropOffTime
-        self.pickUpPolyLines = pickUpPolylines == nil ? [] : pickUpPolylines!
-        
-        // Hiker
-        self.hikerID = hikerID
-        self.hikerFirstName = hikerFirstName
-        self.hikerLastName = hikerLastName
-        
-        // Extra Pricing
-        self.extraTimePrice = extraTimePrice
-        
-        // Canceled Dates
-        self.canceledDates = canceledDates
-        
-    }
-    
-    // Function used to load in polyline.
-    func calculatePolyLine (route: MKRoute) {
-        self.polyLine = Mapping.MKPolylineToMGLPolyine(mkPolyline: route.polyline)
+        self.repeatedWeekDays = repeatedWeekDays
+        self.polyline = polyline
+        self.hitches = hitches
     }
     
     // Returns the week days and the actually month and day.
@@ -135,7 +71,7 @@ class Drive {
     }
     
     func getLongRepeatedWeekDays () -> [String] {
-        return self.repeatWeekDays.map({x -> String in return DateTime.longWeekDays[x-1]})
+        return self.repeatedWeekDays.map({x -> String in return DateTime.longWeekDays[x-1]})
     }
     
     // Get drive copies that are in a date time range.
@@ -147,7 +83,7 @@ class Drive {
         }
         
         // If this isn't a repeating drive then just return itself in a list.
-        if self.repeatWeekDays == [] {
+        if self.repeatedWeekDays == [] {
             return [self]
         }
         
@@ -172,12 +108,11 @@ class Drive {
         while !iterDateTime.isSameDayAs(dateTime2: endDateTime) {
             
             // Check to see if the iter datetime is part of the repeated week day.
-            if self.repeatWeekDays.contains(iterDateTime.weekDay) {
+            if self.repeatedWeekDays.contains(iterDateTime.weekDay) {
                 
                 // Add this drive.
-                let drive = Drive(driverFirstName: self.firstName, driverLastName: self.lastName, driverID: self.driverID, start: self.start, end: self.end, startDateTime: iterDateTime, endDateTime: iterDateTime.addTimeInterval(timeInteral: timeInterval), repeatWeekDays: self.repeatWeekDays, polyLine: self.polyLine, orRoute: nil)
-                drive.configureOptionalProperties(driveID: self.id, pickingUpHiker: self.pickingUpHiker, pickUpLocation: self.pickUpLocation, dropOffLocation: self.dropOffLocation, pickUpTime: self.pickUpTime, dropOffTime: self.dropOffTime, pickUpPolylines: self.pickUpPolyLines, hikerID: self.hikerID, hikerFirstName: self.hikerFirstName, hikerLastName: self.hikerLastName, extraTimePrice: self.extraTimePrice, canceledDates: self.canceledDates, hitchedStartDateTime: self.hitchedStartDateTime)
-                
+                let drive = Drive(id: self.id, driver: self.driver, start: self.start, end: self.end, startDateTime: iterDateTime, endDateTime: iterDateTime.addTimeInterval(timeInteral: timeInterval), repeatedWeekDays: self.repeatedWeekDays, polyline: self.polyline, hitches: self.hitches)
+                drive.estimagedPickUpDateTime = self.estimagedPickUpDateTime
                 driveList.append(drive)
 
             }
@@ -189,6 +124,7 @@ class Drive {
         
     }
     
+    /*
     // Function that returns all drives that are a certain number of days from a startdate.
     func getDrivesDaysFromNow (startDateTime: DateTime, nDays : Int) -> [Drive] {
         
@@ -198,7 +134,7 @@ class Drive {
         daysFromNow.storeDate()
         
         // Check if this is a repeated drive.
-        if self.repeatWeekDays == [] {
+        if self.repeatedWeekDays == [] {
             
             if self.startDateTime.date < daysFromNow.date {
                 // If this drive's date is less than the calculated date n days from now, then return itself.
@@ -219,9 +155,9 @@ class Drive {
         
         // Calculate the startingWeekDay
         let startingWeekDay : Int
-        let onlyFutureWeekDays = repeatWeekDays.filter({ x -> Bool in return x >= startDateTime.weekDay})
+        let onlyFutureWeekDays = repeatedWeekDays.filter({ x -> Bool in return x >= startDateTime.weekDay})
         if onlyFutureWeekDays == [] {
-            startingWeekDay = repeatWeekDays.min()!
+            startingWeekDay = repeatedWeekDays.min()!
         } else {
             startingWeekDay = onlyFutureWeekDays.min()!
         }
@@ -234,7 +170,7 @@ class Drive {
             // Go through each week day.
             for weekDay in weekDayArray {
                 
-                if repeatWeekDays.contains(weekDay) {
+                if repeatedWeekDays.contains(weekDay) {
                     
                     // Calculate how many days ahead of today this drive is going to be.
                     let weekCount : Int
@@ -274,6 +210,7 @@ class Drive {
         
         return driveList
     }
+    */
     
     // Time interval between start and end.
     func getTimeBetweenStartAndEnd () -> TimeInterval {
@@ -281,7 +218,10 @@ class Drive {
     }
     
     // Loads drive from json.
-    class func loadFromJSON (json: [String : Any]) -> Drive? {
+    class func loadFromJSON (json: [String : Any]) -> Drive {
+        
+        // Load ID.
+        let id = json["id"] as! Int
         
         // Load start information
         let startLat = json["start_lat"] as! CLLocationDegrees
@@ -306,33 +246,32 @@ class Drive {
         let endDateTime = DateTime.loadFromJSONRep(jsonRep: endDateTimeString)
         
         // Build start and end place.
-        let startPlace = Place(title: startTitle, subtitle: startSubTitle, coordinate: CLLocationCoordinate2D(latitude: startLat, longitude: startLong))
-        let endPlace = Place(title: endTitle, subtitle: endSubTitle, coordinate: CLLocationCoordinate2D(latitude: endLat, longitude: endLong))
+        let startPlace = Place(title: startTitle, subtitle: startSubTitle!, coordinate: CLLocationCoordinate2D(latitude: startLat, longitude: startLong))
+        let endPlace = Place(title: endTitle, subtitle: endSubTitle!, coordinate: CLLocationCoordinate2D(latitude: endLat, longitude: endLong))
         
         // Load user information.
-        let userID = (json["user"] as! [String:Any])["id"] as! Int
-        var firstName : String
-        var lastName : String
-        if userID == User.getCurrentUser()?.id {
-            firstName = (User.getCurrentUser()?.firstName)!
-            lastName = (User.getCurrentUser()?.lastName)!
-        } else {
-            firstName = (json["user"]as! [String:Any])["first_name"] as! String
-            lastName = (json["user"]as! [String:Any])["last_name"] as! String
-        }
-        
-        // Load drive.
-        let drive = Drive(driverFirstName: firstName, driverLastName: lastName, driverID: userID, start: startPlace, end: endPlace, startDateTime: startDateTime, endDateTime: endDateTime, repeatWeekDays: repeatedWeekDays, polyLine: nil, orRoute: nil)
-        drive.configureOptionalProperties(driveID: json["id"] as? Int, pickingUpHiker: false, pickUpLocation: nil, dropOffLocation: nil, pickUpTime: nil, dropOffTime: nil, pickUpPolylines: nil, hikerID: nil, hikerFirstName: nil, hikerLastName: nil, extraTimePrice: 0.0, canceledDates: [], hitchedStartDateTime: nil)
-        
-        // If we have extra features, add them to drive.
-        if json.index(forKey: "estimated_pick_up_date_time") != nil {
-            drive.pickUpTime = DateTime.loadFromJSONRep(jsonRep: json["estimated_pick_up_date_time"] as! String)
-        }
-        
+        let driver = User.loadFromJSON(json: json["driver"] as! [String : Any])
+
+        // Load the polyline
+        var polyline = MGLPolyline()
         if json.index(forKey: "polyline") != nil {
-            let polyLineData = NSData(base64Encoded: (json["polyline"] as! String), options: NSData.Base64DecodingOptions(rawValue: UInt(0))) as! Data
-            drive.polyLine = Mapping.loadPolyLineFromGEOJSON(polyLineData: polyLineData)
+            let polyLineData = Data(base64Encoded: json["polyline"] as! String)
+            polyline = Mapping.loadPolyLineFromGEOJSON(polyLineData: polyLineData!)!
+        }
+        
+        // Load the hitches.
+        var hitches = [Hitch]()
+        if json.index(forKey: "hitches") != nil {
+            for hitchJSON in (json["hitches"] as! [[String : Any]]) {
+                hitches.append(Hitch.loadFromJSON(json: hitchJSON))
+            }
+        }
+    
+        // Load and return drive.
+        let drive = Drive(id: id, driver: driver, start: startPlace, end: endPlace, startDateTime: startDateTime, endDateTime: endDateTime, repeatedWeekDays: repeatedWeekDays, polyline: polyline, hitches: hitches)
+        
+        if json.index(forKey: "estimated_pick_up_date_time") != nil {
+            drive.estimagedPickUpDateTime = DateTime.loadFromJSONRep(jsonRep: json["estimated_pick_up_date_time"] as! String)
         }
         
         return drive
@@ -341,36 +280,135 @@ class Drive {
     func getJSON () -> [String : Any] {
         
         // Encode polyline.
-        let polyline = self.polyLine!.geoJSONData(usingEncoding: 1).base64EncodedString()
+        let polyline = self.polyline.getByteString()
         
         // Construct JSON.
-        var json : [String: Any] = ["user_id" :         self.driverID,
-                                    "start_lat" :       self.start.coordinate!.latitude ,
-                                    "start_long" :      self.start.coordinate!.longitude ,
-                                    "start_title" :     self.start.title!,
-                                    "start_sub_title" : self.start.subtitle == nil ? "" : self.start.subtitle!,
+        var json : [String: Any] = ["driver_id" :         self.driver.id,
+                                    "start_lat" :       self.start.coordinate.latitude ,
+                                    "start_long" :      self.start.coordinate.longitude ,
+                                    "start_title" :     self.start.title,
+                                    "start_sub_title" : self.start.subtitle,
                                     "start_date_time" : self.startDateTime.getJSONRepresentation()]
         
-        json["end_lat"] = self.end.coordinate!.latitude
-        json["end_long"] = self.end.coordinate!.longitude
-        json["end_title"] = self.end.title!
-        json["end_sub_title"] = self.end.subtitle == nil ? "" : self.end.subtitle!
+        json["end_lat"] = self.end.coordinate.latitude
+        json["end_long"] = self.end.coordinate.longitude
+        json["end_title"] = self.end.title
+        json["end_sub_title"] = self.end.subtitle
         json["end_date_time"] = self.endDateTime.getJSONRepresentation()
-        json["repeated_week_days"] = self.repeatWeekDays
+        json["repeated_week_days"] = self.repeatedWeekDays
         json["polyline"] = polyline
-        json["max_lat"] = self.polyLine!.overlayBounds.ne.latitude
-        json["max_long"] = self.polyLine!.overlayBounds.ne.longitude
-        json["min_lat"] = self.polyLine!.overlayBounds.sw.latitude
-        json["min_long"] = self.polyLine!.overlayBounds.sw.longitude
+        json["max_lat"] = self.polyline.overlayBounds.ne.latitude
+        json["max_long"] = self.polyline.overlayBounds.ne.longitude
+        json["min_lat"] = self.polyline.overlayBounds.sw.latitude
+        json["min_long"] = self.polyline.overlayBounds.sw.longitude
         
         return json
     }
+    
+    // Compete Hitch functions.
+    
+    /*
+    // Function which completes the hitch for multiple drives.
+    class func completeHitchList (driveList: [Drive], pickUpPlace: Place, dropOffPlace: Place, resultList: [Drive], completionHandler: @escaping ([Drive]) -> Void) {
+        
+        if driveList.count == 0 {
+            // Call the completion handler.
+            completionHandler(resultList)
+        } else {
+            
+            let drive = driveList.first!
+            
+            // Complete the hitch for this drive.
+            Drive.completeHitch(drive: drive, pickUpPlace: pickUpPlace, dropOffPlace: dropOffPlace, completionHandler: {
+                
+                (drive: Drive) -> Void in
+                
+                let newResultList = resultList + [drive]
+                
+                // Recursively call this function to get through the list.
+                Drive.completeHitchList(driveList: Array(driveList.dropFirst()), pickUpPlace: pickUpPlace, dropOffPlace: dropOffPlace, resultList: newResultList, completionHandler: completionHandler)
+            })
+            
+        }
+    }*/
+    
+    // Function which completes a hitch for a single drive.
+    class func completeHitch (hitchHiker : User, drive: Drive, pickUpPlace: Place, dropOffPlace: Place,completionHandler: @escaping (Hitch) -> Void) {
+        
+        var polylines = [MGLPolyline]()
+        
+        // Calculate each starting position.
+        Drive.calculateRouteFromAToB(pointA: dropOffPlace.coordinate, pointB: drive.end.coordinate, endTime: drive.endDateTime.date, completionHandler: {
+            
+            (route) -> Void in
+            
+            // Add polyline and store times.
+            polylines.append(Mapping.MKPolylineToMGLPolyine(mkPolyline: route.polyline))
+            let dropOffTime = drive.endDateTime.subtractTimeInterval(timeInteral: route.expectedTravelTime)
+            
+            Drive.calculateRouteFromAToB(pointA: pickUpPlace.coordinate, pointB: dropOffPlace.coordinate, endTime: dropOffTime.date, completionHandler: {
+                
+                (route) -> Void in
+                
+                // Add polyline, drop off location, and time.
+                polylines.append(Mapping.MKPolylineToMGLPolyine(mkPolyline: route.polyline))
+                let pickUpTime = dropOffTime.subtractTimeInterval(timeInteral: route.expectedTravelTime)
+                
+                Drive.calculateRouteFromAToB(pointA: drive.start.coordinate, pointB: pickUpPlace.coordinate,  endTime: pickUpTime.date, completionHandler: {
+                    
+                    (route) -> Void in
+                    
+                    // Add the final polyline and calculate start time.
+                    polylines.append(Mapping.MKPolylineToMGLPolyine(mkPolyline: route.polyline))
+                    let startDateTime = pickUpTime.subtractTimeInterval(timeInteral: route.expectedTravelTime)
+                    
+                    // Complete the hitch.
+                    let hitch = Hitch(id: 0, drive: drive, hitchHiker: hitchHiker, adjustedStartDateTime : startDateTime, pickUpPlace: pickUpPlace, dropOffPlace: dropOffPlace, pickUpDateTime: pickUpTime, dropOffDateTime: dropOffTime, repeatedWeekDays: [], accepted: false, polylines: polylines)
+                    
+                    completionHandler(hitch)
+                })
+            })
+        })
+    }
+    
+    // Function which calculates a route from a to b given an end time.
+    class func calculateRouteFromAToB (pointA: CLLocationCoordinate2D, pointB: CLLocationCoordinate2D, endTime: Date, completionHandler: @escaping (MKRoute) -> Void) {
+        
+        // Get request.
+        let request = MKDirectionsRequest()
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: pointA))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: pointB))
+        request.arrivalDate = endTime
+        let directions = MKDirections(request: request)
+        directions.calculate(completionHandler: {
+            
+            (response, error) -> Void in
+            
+            if error != nil {
+                // Handle the error.
+                fatalError("\(error)")
+            }
+            
+            if response?.routes.count == 0 {
+                fatalError("There is no route from here to here.")
+            }
+            
+            // Add this route to the drives polylines.
+            let route = response?.routes.first!
+            
+            // Recursively call the function again.
+            completionHandler(route!)
+        })
+        
+        
+    }
+
     
     
     
     /*
      * Core Data Methods.
-     */
+     *
     
     class func loadFromCoreData (driveCore : DriveCore) -> Drive {
         
@@ -446,7 +484,7 @@ class Drive {
         } catch {
             fatalError("Error saving to CoreData: \(error)")
         }
-    }
+    }*
     
     // Get user's drives.
     class func getUsersDrivesDaysFromNow (userID: Int, daysFromNow: Int) -> [Drive] {
@@ -523,97 +561,8 @@ class Drive {
         }
         
         return driveResults
-    }
+    }*/
 
-    class func completeHitchList (driveList: [Drive], pickUpPlace: Place, dropOffPlace: Place, resultList: [Drive], completionHandler: @escaping ([Drive]) -> Void) {
-        
-        if driveList.count == 0 {
-            // Call the completion handler.
-            completionHandler(resultList)
-        } else {
-            
-            let drive = driveList.first!
-            
-            // Complete the hitch for this drive.
-            Drive.completeHitch(drive: drive, pickUpPlace: pickUpPlace, dropOffPlace: dropOffPlace, completionHandler: {
-                
-                (drive: Drive) -> Void in
-                                    
-                let newResultList = resultList + [drive]
-                
-                // Recursively call this function to get through the list.
-                Drive.completeHitchList(driveList: Array(driveList.dropFirst()), pickUpPlace: pickUpPlace, dropOffPlace: dropOffPlace, resultList: newResultList, completionHandler: completionHandler)
-            })
-            
-        }
-    }
-    
-    class func completeHitch (drive: Drive, pickUpPlace: Place, dropOffPlace: Place,completionHandler: @escaping (Drive) -> Void) {
-        
-       // Calculate each starting position.
-        Drive.calculateRouteFromAToB(pointA: dropOffPlace.coordinate!, pointB: drive.end.coordinate!, endTime: drive.endDateTime.date, completionHandler: {
-
-            (route) -> Void in
-            
-            // Add polyline and store times.
-            drive.pickUpPolyLines.append(Mapping.MKPolylineToMGLPolyine(mkPolyline: route.polyline))
-            let dropOffTime = drive.endDateTime.subtractTimeInterval(timeInteral: route.expectedTravelTime)
-            
-            Drive.calculateRouteFromAToB(pointA: pickUpPlace.coordinate!, pointB: dropOffPlace.coordinate!, endTime: dropOffTime.date, completionHandler: {
-                    
-                (route) -> Void in
-                
-                // Add polyline, drop off location, and time.
-                drive.pickUpPolyLines.append(Mapping.MKPolylineToMGLPolyine(mkPolyline: route.polyline))
-                let pickUpTime = dropOffTime.subtractTimeInterval(timeInteral: route.expectedTravelTime)
-                
-                Drive.calculateRouteFromAToB(pointA: drive.start.coordinate!, pointB: pickUpPlace.coordinate!,  endTime: pickUpTime.date, completionHandler: {
-                        
-                    (route) -> Void in
-                    
-                    // Add the final polyline and calculate start time.
-                    drive.pickUpPolyLines.append(Mapping.MKPolylineToMGLPolyine(mkPolyline: route.polyline))
-                    let startDateTime = pickUpTime.subtractTimeInterval(timeInteral: route.expectedTravelTime)
-                    
-                    // Complete the hitch.
-                    drive.configureOptionalProperties(driveID: drive.id, pickingUpHiker: true, pickUpLocation: pickUpPlace, dropOffLocation: dropOffPlace, pickUpTime: pickUpTime, dropOffTime: dropOffTime, pickUpPolylines: drive.pickUpPolyLines, hikerID: nil, hikerFirstName: nil, hikerLastName: nil, extraTimePrice: 5.0, canceledDates: [], hitchedStartDateTime: startDateTime)
-                    
-                    completionHandler(drive)
-                })
-            })
-        })
-    }
-
-    class func calculateRouteFromAToB (pointA: CLLocationCoordinate2D, pointB: CLLocationCoordinate2D, endTime: Date, completionHandler: @escaping (MKRoute) -> Void) {
-        
-        // Get request.
-        let request = MKDirectionsRequest()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: pointA))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: pointB))
-        request.arrivalDate = endTime
-        let directions = MKDirections(request: request)
-        directions.calculate(completionHandler: {
-            
-            (response, error) -> Void in
-            
-            if error != nil {
-                // Handle the error.
-                fatalError("\(error)")
-            }
-            
-            if response?.routes.count == 0 {
-                fatalError("There is no route from here to here.")
-            }
-            
-            // Add this route to the drives polylines.
-            let route = response?.routes.first!
-            
-            // Recursively call the function again.
-            completionHandler(route!)
-        })
-
-
-    }
     
     /* Calculate time duration of hitch on a drive.
     class func driveFromHitchAndDrive (pickUpCoord: CLLocationCoordinate2D, dropOffCoord: CLLocationCoordinate2D, drive: Drive) -> Drive? {
@@ -658,16 +607,10 @@ class Drive {
         return nil
     }*/
     
-    // HELPERS
-    class func calculateRoute (start: CLLocationCoordinate2D, end: CLLocationCoordinate2D) {
-        
-        
-    }
-    
-    
 }
 
 
+/*
 // DriveCore extension.
 extension DriveCore {
     
@@ -727,3 +670,4 @@ extension DriveCore {
         }
     }
 }
+*/

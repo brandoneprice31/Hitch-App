@@ -21,6 +21,7 @@
 		A870D9A71E4B980000BAA3C3 /* DCOccurrenceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870D9A61E4B980000BAA3C3 /* DCOccurrenceVC.swift */; };
 		A870D9A91E4BA0AC00BAA3C3 /* DCTimeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870D9A81E4BA0AC00BAA3C3 /* DCTimeVC.swift */; };
 		A870D9AB1E4BAF2B00BAA3C3 /* DCPriceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870D9AA1E4BAF2B00BAA3C3 /* DCPriceVC.swift */; };
+		A87A60391E70CF0A003F8962 /* MGLPolyline+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87A60381E70CF0A003F8962 /* MGLPolyline+extension.swift */; };
 		A87E686D1E37E6D000F2C097 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87E686C1E37E6D000F2C097 /* LoginVC.swift */; };
 		A87E686F1E37EEBE00F2C097 /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87E686E1E37EEBE00F2C097 /* SignUpVC.swift */; };
 		A87E68711E3801C800F2C097 /* PersonalInfoSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87E68701E3801C800F2C097 /* PersonalInfoSignUpVC.swift */; };
@@ -81,6 +82,7 @@
 		A870D9A61E4B980000BAA3C3 /* DCOccurrenceVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCOccurrenceVC.swift; sourceTree = "<group>"; };
 		A870D9A81E4BA0AC00BAA3C3 /* DCTimeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCTimeVC.swift; sourceTree = "<group>"; };
 		A870D9AA1E4BAF2B00BAA3C3 /* DCPriceVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCPriceVC.swift; sourceTree = "<group>"; };
+		A87A60381E70CF0A003F8962 /* MGLPolyline+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MGLPolyline+extension.swift"; sourceTree = "<group>"; };
 		A87E686C1E37E6D000F2C097 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		A87E686E1E37EEBE00F2C097 /* SignUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		A87E68701E3801C800F2C097 /* PersonalInfoSignUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalInfoSignUpVC.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				A85CC69D1E43D6B80011E84B /* DateTime.swift */,
 				A89B57381E44F001005F0ABB /* Place.swift */,
 				A80345761E6774C200A9294E /* Hitch.swift */,
+				A8E4DF281E3E3ACA007DC2A0 /* ProfileImage.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 			children = (
 				A87F3ABB1E4101EA0023C314 /* UIViewController+extension.swift */,
 				A8B9F7951E5166D50002F0E0 /* UITableView+extension.swift */,
+				A87A60381E70CF0A003F8962 /* MGLPolyline+extension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -230,7 +234,6 @@
 				A805C5C91E49372400CDB24B /* WeekDaysView.swift */,
 				A8D3E0F61E421BD30045539D /* CustomAnnotationView.swift */,
 				A8E4DF211E3BA726007DC2A0 /* HitchVC.swift */,
-				A8E4DF281E3E3ACA007DC2A0 /* ProfileImage.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 				A8E4DF2E1E3E406A007DC2A0 /* MainVC.swift in Sources */,
 				A85CC69C1E43B3EF0011E84B /* HikeTBVCells.swift in Sources */,
 				A805C5CA1E49372400CDB24B /* WeekDaysView.swift in Sources */,
+				A87A60391E70CF0A003F8962 /* MGLPolyline+extension.swift in Sources */,
 				A87E686D1E37E6D000F2C097 /* LoginVC.swift in Sources */,
 				A8E4DF221E3BA726007DC2A0 /* HitchVC.swift in Sources */,
 				A8F104CC1E3FCA0600EFCF65 /* Design.swift in Sources */,

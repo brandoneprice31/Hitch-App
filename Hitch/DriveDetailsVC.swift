@@ -40,14 +40,14 @@ class DriveDetailsVC: UIViewController, MGLMapViewDelegate {
         endTimeLabel.text = drive.endDateTime.time()
         
         // Configure mapview.
-        Mapping.DrawDriveOnMapView(mapView: mapView, drive: drive)
+        Mapping.DrawDriveOnMapView(mapView: mapView, drive: drive, hitch : nil)
         
         // Configure Occurrence stuff.
-        if drive.repeatWeekDays != [] {
+        if drive.repeatedWeekDays != [] {
             weekDaysView.alpha = 1.0
             specificDateLabel.alpha = 0.0
-            let disabledDays = WeekDaysView.getDisabledDays(notDisabledDays: drive.repeatWeekDays)
-            weekDaysView.configure(selectedDays: drive.repeatWeekDays, disabledDays: disabledDays, touchesAllowed: false)
+            let disabledDays = WeekDaysView.getDisabledDays(notDisabledDays: drive.repeatedWeekDays)
+            weekDaysView.configure(selectedDays: drive.repeatedWeekDays, disabledDays: disabledDays, touchesAllowed: false)
         } else {
             weekDaysView.alpha = 0.0
             specificDateLabel.alpha = 1.0
@@ -140,7 +140,7 @@ class DriveDetailsVC: UIViewController, MGLMapViewDelegate {
         nextVC.defaultVC = field
         nextVC.endLocation = drive.end
         nextVC.startLocation = drive.start
-        nextVC.repeatedWeekdays = drive.repeatWeekDays
+        nextVC.repeatedWeekdays = drive.repeatedWeekDays
         nextVC.endDate = drive.endDateTime.date
         nextVC.endDateTime = drive.endDateTime
         let transition = Design.moveUpTransition()

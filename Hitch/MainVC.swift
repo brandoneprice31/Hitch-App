@@ -121,7 +121,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             // Print the drives you fetched for debugging.
             print("")
-            print("\(drive.start.title!) -> \(drive.end.title!) | \(drive.startDateTime.time()) -> \(drive.endDateTime.time()) | repeating: \(drive.getLongRepeatedWeekDays()) starting \(drive.startDateTime.abbreviatedDate())")
+            print("\(drive.start.title) -> \(drive.end.title) | \(drive.startDateTime.time()) -> \(drive.endDateTime.time()) | repeating: \(drive.getLongRepeatedWeekDays()) starting \(drive.startDateTime.abbreviatedDate())")
             print("")
             
             // Append upcoming drives.

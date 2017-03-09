@@ -10,11 +10,15 @@ import Foundation
 import CoreLocation
 
 class Place {
-    var title : String?
-    var subtitle : String?
-    var coordinate : CLLocationCoordinate2D?
+    var title : String = ""
+    var subtitle : String = ""
+    var coordinate : CLLocationCoordinate2D = CLLocationCoordinate2D()
     
-    init (title: String?, subtitle: String?, coordinate: CLLocationCoordinate2D?) {
+    init () {
+        
+    }
+    
+    init (title: String, subtitle: String, coordinate: CLLocationCoordinate2D) {
         self.title = title
         self.subtitle = title
         self.coordinate = coordinate

@@ -12,12 +12,16 @@ import UIKit
 
 class User {
     
-    var firstName : String
-    var lastName : String
-    var email : String
-    var id : Int
-    var token : String
-    var profileImage : UIImage?
+    var firstName : String = ""
+    var lastName : String = ""
+    var email : String = ""
+    var id : Int = 0
+    var token : String = ""
+    var profileImage : UIImage? = nil
+    
+    init () {
+        
+    }
     
     init (id: Int, firstName: String, lastName: String, email: String, token: String, profileImage : UIImage?) {
         self.firstName = firstName
@@ -129,6 +133,37 @@ class User {
             return UIImage(named: "default-profile")!
         }
         return profileImage!
+    }
+    
+    class func loadFromJSON (json : [String : Any]) -> User {
+        
+        // Parse JSON
+        let first_name = json["first_name"] as! String
+        let last_name = json["last_name"] as! String
+        var id = 0
+        var email = ""
+        var token = ""
+        var profileImage = UIImage(named: "default-profile")
+        
+        if json.index(forKey: "id") != nil {
+            id = json["id"] as! Int
+        }
+        
+        if json.index(forKey: "email") != nil {
+            email = json["email"] as! String
+        }
+        
+        if json.index(forKey: "token") != nil {
+            token = json["token"] as! String
+        }
+        
+        if json.index(forKey: "profile_image") != nil {
+            let profile_image_data = json["profile_image"] as! String
+            profileImage = UIImage(data: Data(base64Encoded: profile_image_data)!)
+        }
+        
+        // Build and return user object.
+        return User(id: id, firstName: first_name, lastName: last_name, email: email, token: token, profileImage: profileImage)
     }
 
     

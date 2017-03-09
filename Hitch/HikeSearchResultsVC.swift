@@ -79,7 +79,7 @@ class HikeSearchResultsVC: UIViewController, UITableViewDelegate, UITableViewDat
         
         // Perform search query.
         self.pauseViewWithAnimation(view: self.view, animationName: "spinner", text: "Finding rides...")
-        API.driveSearch(token: (User.getCurrentUser()?.token)!, pickUpCoordinate: self.startLocation.coordinate!, dropOffCoordinate: self.endLocation.coordinate!, startDateTime: monthDateTime, endDateTime: monthDateTime.endOfMonth(), completionHandler: {
+        API.driveSearch(token: (User.getCurrentUser()?.token)!, pickUpCoordinate: self.startLocation.coordinate, dropOffCoordinate: self.endLocation.coordinate, startDateTime: monthDateTime, endDateTime: monthDateTime.endOfMonth(), completionHandler: {
             
             (response, driveList) in
             
@@ -334,7 +334,7 @@ class HikeSearchResultsVC: UIViewController, UITableViewDelegate, UITableViewDat
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExpandedHikeCellSchedule") as! ExpandedHikeCellSchedule
             let index = Int(allCells[indexPath.row].components(separatedBy: " ")[1])
             let drive = drives[index!]
-            cell.configure(drive: drive)
+            cell.configure(drive: drive, hitch: self.hitch!)
             return cell
             
         } else if allCells[indexPath.row].components(separatedBy: " ")[0] == "ExpandedHikeCellButton" {
@@ -354,7 +354,7 @@ class HikeSearchResultsVC: UIViewController, UITableViewDelegate, UITableViewDat
             let cell = tableView.dequeueReusableCell(withIdentifier: "HikeSearchResultsPriceCell") as! HikeSearchResultsPriceCell
             let index = Int(allCells[indexPath.row].components(separatedBy: " ")[1])
             let drive = drives[index!]
-            cell.configure(basePrice: drive.basePrice, extraTravelPrice: drive.extraTimePrice)
+            cell.configure(basePrice: 1.00, extraTravelPrice: 0.31)
             
             return cell
             
@@ -374,13 +374,13 @@ class HikeSearchResultsVC: UIViewController, UITableViewDelegate, UITableViewDat
         if allCells == tempCells && allCells[indexPath.row].components(separatedBy: " ")[0] == "HikeTBVCell" {
             
             let index = Int(allCells[indexPath.row].components(separatedBy: " ")[1])
-            let unconfigured_drive = drives[index!]
+            let drive = drives[index!]
             
             // Pause everything and complete the hitch / drive.
             self.pauseViewWithAnimation(view: self.view, animationName: "spinner", text: "Calculating pickup and drop off route...")
-            Drive.completeHitch(drive: unconfigured_drive, pickUpPlace: self.startLocation, dropOffPlace: self.endLocation, completionHandler: {
+            Drive.completeHitch(hitchHiker: User.getCurrentUser()!, drive: drive, pickUpPlace: self.startLocation, dropOffPlace: self.endLocation, completionHandler: {
                 
-                (drive) in
+                (hitch) in
                 
                 self.unPauseViewAndRemoveAnimation(view: self.view)
                 
@@ -389,8 +389,7 @@ class HikeSearchResultsVC: UIViewController, UITableViewDelegate, UITableViewDat
                 self.backButton.alpha = 0.0
                 
                 // Build hitch.
-                let driver = User(id: unconfigured_drive.driverID, firstName: unconfigured_drive.firstName, lastName: unconfigured_drive.lastName, email: "", token: "", profileImage: nil)
-                self.hitch = Hitch(driveID: drive.id!, user: User.getCurrentUser()!, driver: driver, pickUpPlace: drive.pickUpLocation!, dropOffPlace: drive.dropOffLocation!, pickUpDateTime: drive.pickUpTime!, dropOffDateTime: drive.dropOffTime!, repeatedWeekDays: drive.repeatWeekDays, accepted: false, polylines: drive.pickUpPolyLines)
+                self.hitch = hitch
                     
                 // Begin updates.
                 tableView.beginUpdates()
@@ -416,7 +415,7 @@ class HikeSearchResultsVC: UIViewController, UITableViewDelegate, UITableViewDat
                 tableView.endUpdates()
                     
                 // Update the map route.
-                Mapping.DrawDriveOnMapView(mapView: self.mapView, drive: drive)
+                Mapping.DrawDriveOnMapView(mapView: self.mapView, drive: drive, hitch: hitch)
             })
         }
     }

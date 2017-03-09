@@ -23,35 +23,23 @@ class HikeTBVCell : UITableViewCell {
     func configureCell (drive: Drive) {
         
         // Set the pick up time label
-        if !drive.pickingUpHiker {
-            self.timeLabel.text = "*" + drive.pickUpTime!.time() + "*"
-        } else {
-            self.timeLabel.text = drive.pickUpTime?.time()
-        }
+        self.timeLabel.text = "*" + drive.estimagedPickUpDateTime!.time() + "*"
 
-        
         // Configure the collapsed weekdaysview by first filtering to get the disabled days.
-        let disabledDays = WeekDaysView.getDisabledDays(notDisabledDays: drive.repeatWeekDays)
-        weekDaysView.configure(selectedDays: drive.repeatWeekDays, disabledDays: disabledDays, touchesAllowed: false)
+        let disabledDays = WeekDaysView.getDisabledDays(notDisabledDays: drive.repeatedWeekDays)
+        weekDaysView.configure(selectedDays: drive.repeatedWeekDays, disabledDays: disabledDays, touchesAllowed: false)
         
         // Configure Profile Pic and name.
         profPic.layer.cornerRadius = profPic.frame.size.width / 2.0
         profPic.clipsToBounds = true
         profPic.contentMode =   .scaleAspectFill
         
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let url = path.appendingPathComponent(drive.profPicName)
-        if FileManager.default.fileExists(atPath: url.path) {
-            let image = UIImage(contentsOfFile: url.path)
-            profPic.image = UIImage(cgImage: (image?.cgImage!)!, scale: CGFloat(1.0), orientation: .right)
-        } else {
-            profPic.image = UIImage(named: "default-profile")
-        }
+        profPic.image = drive.driver.getProfileImage()
 
-        nameLabel.text = drive.firstName
+        nameLabel.text = drive.driver.firstName
         
         // If we repeat then configure the weekDaysView and make it editable.  Otherwise we make it alpha 0.0.
-        if drive.repeatWeekDays != [] {
+        if drive.repeatedWeekDays != [] {
             
             weekDaysView.alpha = 1.0
             nonRepeatingDateLabel.alpha = 0.0
@@ -81,18 +69,18 @@ class ExpandedHikeCellSchedule : UITableViewCell {
     @IBOutlet var endLocation: UILabel!
     @IBOutlet var lastBox: UILabel!
     
-    func configure (drive: Drive) {
+    func configure (drive: Drive, hitch: Hitch) {
         
         // Configure times.
-        startTime.text = drive.hitchedStartDateTime?.time()
-        pickUpTime.text = drive.pickUpTime?.time()
-        dropOffTime.text = drive.dropOffTime?.time()
+        startTime.text = hitch.adjustedStartDateTime.time()
+        pickUpTime.text = hitch.pickUpDateTime.time()
+        dropOffTime.text = hitch.dropOffDateTime.time()
         endTime.text = drive.endDateTime.time()
         
         // COnfigure Locations.
         startLocation.text = drive.start.title
-        pickUpLocation.text = drive.pickUpLocation?.title
-        dropOffLocation.text = drive.dropOffLocation?.title
+        pickUpLocation.text = hitch.pickUpPlace.title
+        dropOffLocation.text = hitch.dropOffPlace.title
         endLocation.text = drive.end.title
         
         // Configure last box.
@@ -113,7 +101,7 @@ class ExpandedHikeCellButton : UITableViewCell {
     
     func configure (drive: Drive, yesButtonMethod: Selector?, vc: UIViewController) {
         
-        if drive.repeatWeekDays == [] {
+        if drive.repeatedWeekDays == [] {
             // No repeating.
             weekDaysView.alpha = 0.0
             occurrenceLabel.text = "This ride only occurs on"
@@ -125,7 +113,7 @@ class ExpandedHikeCellButton : UITableViewCell {
             // Yes repeating.
             weekDaysView.alpha = 1.0
             occurrenceLabel.text = "Tap days to repeat weekly"
-            let disabledDays = WeekDaysView.getDisabledDays(notDisabledDays: drive.repeatWeekDays)
+            let disabledDays = WeekDaysView.getDisabledDays(notDisabledDays: drive.repeatedWeekDays)
             weekDaysView.configure(selectedDays: [], disabledDays: disabledDays, touchesAllowed: true)
             nonRepeatingLabel.alpha = 0.0
         }

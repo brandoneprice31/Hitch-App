@@ -32,7 +32,7 @@ class MainVCDriveCell : UITableViewCell {
         box2.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4.0)
         
         // Configure hiker label.
-        if drive.pickingUpHiker {
+        if drive.hitches.count != 0 {
             isAHikerLabel.text = "Hitchhiker:"
         } else {
             isAHikerLabel.text = "No hitchhiker"
@@ -61,7 +61,7 @@ class MainVCHitchCell : UITableViewCell {
         dropOffTimeLabel.text = hitch.dropOffDateTime.time()
         pickUpPlaceLabel.text = hitch.pickUpPlace.title
         dropOffPlaceLabel.text = hitch.dropOffPlace.title
-        driverNameLabel.text = hitch.driver!.firstName + " " + hitch.driver!.lastName
+        driverNameLabel.text = hitch.drive.driver.firstName + " " + hitch.drive.driver.lastName
         
         // Configure Box
         box2.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4.0)
@@ -85,22 +85,29 @@ class MainVCHitchedDriveCell: UITableViewCell {
     @IBOutlet var hitchHikerLabel: UILabel!
     @IBOutlet var box4: UILabel!
     
-    func configure (drive: Drive) {
+    func configure (drive: Drive, hitchID : Int) {
+        
+        var hitch : Hitch!
+        for driveHitch in drive.hitches {
+            if driveHitch.id == hitchID {
+                hitch = driveHitch
+            }
+        }
         
         // Configure Box
         box4.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4.0)
         
-        startTimeLabel.text = drive.startDateTime.time()
-        pickUpTimeLabel.text = drive.pickUpTime?.time()
-        dropOffTimeLabel.text = drive.dropOffTime?.time()
+        startTimeLabel.text = hitch.adjustedStartDateTime.time()
+        pickUpTimeLabel.text = hitch.pickUpDateTime.time()
+        dropOffTimeLabel.text = hitch.dropOffDateTime.time()
         endTimeLabel.text = drive.endDateTime.time()
         
         startPlaceLabel.text = drive.start.title
-        pickUpPlaceLabel.text = drive.pickUpLocation?.title
-        dropOffPlaceLabel.text = drive.dropOffLocation?.title
+        pickUpPlaceLabel.text = hitch.pickUpPlace.title
+        dropOffPlaceLabel.text = hitch.dropOffPlace.title
         endPlaceLabel.text = drive.end.title
         
-        hitchHikerLabel.text = drive.hikerFirstName! + " " + drive.hikerLastName!
+        hitchHikerLabel.text = hitch.hitchHiker.firstName + " " + hitch.hitchHiker.lastName
     }
     
     required init?(coder aDecoder: NSCoder) {

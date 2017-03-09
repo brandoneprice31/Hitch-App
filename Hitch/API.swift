@@ -155,7 +155,7 @@ class API {
     class func getUsersDrives (token: String, completionHandler: @escaping (URLResponse, [Drive]?) -> Void) {
         
         // Perform request.
-        API.performRequest(requestType: "GET", urlPath: "drives/all/", json: nil, token: token, completionHandler: {
+        API.performRequest(requestType: "GET", urlPath: "drives/", json: nil, token: token, completionHandler: {
             (response, jsonList) in
             
             switch response.statusCode {
@@ -166,7 +166,7 @@ class API {
                 // Construct drive array.
                 var driveList = [Drive]()
                 for json in json_drive_data {
-                    driveList.append(Drive.loadFromJSON(json: json)!)
+                    driveList.append(Drive.loadFromJSON(json: json))
                 }
                 
                 // Return drive list.
@@ -188,7 +188,7 @@ class API {
         let json = drive.getJSON()
         
         // Perform request.
-        API.performRequest(requestType: "POST", urlPath: "drives/all/", json: json, token: token, completionHandler: {
+        API.performRequest(requestType: "POST", urlPath: "drives/create/", json: json, token: token, completionHandler: {
             (response, _) in
             
             if response.statusCode != 201 {
@@ -207,7 +207,7 @@ class API {
     class func getUsersHitches(token: String, completionHandler: @escaping (URLResponse, [Hitch]?) -> Void) {
         
         // Perform request.
-        API.performRequest(requestType: "GET", urlPath: "hitches/all/", json: nil, token: token, completionHandler: {
+        API.performRequest(requestType: "GET", urlPath: "hitches/", json: nil, token: token, completionHandler: {
             (response, jsonList) in
             
             if response.statusCode != 200 {
@@ -241,7 +241,7 @@ class API {
         let json : [String : Any] = hitch.getJSON()
         
         // Perform request.
-        API.performRequest(requestType: "POST", urlPath: "hitches/all/", json: json, token: hitch.user.token, completionHandler: {
+        API.performRequest(requestType: "POST", urlPath: "hitches/create/", json: json, token: hitch.hitchHiker.token, completionHandler: {
             (response, json) in
             
             // Handle the response.
@@ -280,7 +280,7 @@ class API {
                 
                 var driveList = [Drive]()
                 for result in resultList {
-                    driveList.append(Drive.loadFromJSON(json: result)!)
+                    driveList.append(Drive.loadFromJSON(json: result))
                 }
                 
                 completionHandler(URLResponse.Success, driveList)

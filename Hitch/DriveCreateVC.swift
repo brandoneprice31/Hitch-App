@@ -264,8 +264,8 @@ class DriveCreateVC: UIViewController {
     func createRouteAndGotoDetailsVC () {
         // Create directions request.
         let request = MKDirectionsRequest()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: startLocation.coordinate!))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: endLocation.coordinate!))
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: startLocation.coordinate))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: endLocation.coordinate))
         request.arrivalDate = endDateTime.date
         request.requestsAlternateRoutes = false
         request.transportType = .automobile
@@ -292,10 +292,8 @@ class DriveCreateVC: UIViewController {
                 self.route = routeResponse.first
                 let startDateTime = self.endDateTime.subtractTimeInterval(timeInteral: self.route.expectedTravelTime)
                 
-                // Get current user.
-                let user = (UIApplication.shared.delegate as! AppDelegate).currentUser
-                
-                let drive = Drive(driverFirstName: user!.firstName, driverLastName: user!.lastName, driverID: user!.id, start: self.startLocation, end: self.endLocation, startDateTime: startDateTime, endDateTime: self.endDateTime, repeatWeekDays: self.repeatedWeekdays, polyLine: nil, orRoute: self.route)
+                // Create that damn drive.
+                let drive = Drive(id: 0, driver: User.getCurrentUser()!, start: self.startLocation, end: self.endLocation, startDateTime: startDateTime, endDateTime: self.endDateTime, repeatedWeekDays: self.repeatedWeekdays, polyline: MGLPolyline.MKPolylineToMGLPolyine(mkPolyline: self.route.polyline), hitches: [])
                 
                 // Transition to next vc after sending the data.
                 let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "DriveDetailsVC") as! DriveDetailsVC

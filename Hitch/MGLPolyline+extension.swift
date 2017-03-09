@@ -1,59 +1,30 @@
 //
-//  Mapping.swift
+//  MGLPolyline+extension.swift
 //  Hitch
 //
-//  Created by Brandon Price on 2/9/17.
+//  Created by Brandon Price on 3/8/17.
 //  Copyright © 2017 BEPco. All rights reserved.
 //
 
+import Foundation
 import Mapbox
 import MapKit
-import MapboxDirections
-import Foundation
 
-
-class Mapping {
+extension MGLPolyline {
     
-    // Function used for drawing drives on map views.
-    class func DrawDriveOnMapView (mapView: MGLMapView, drive: Drive, hitch: Hitch?) {
+    
+    // Get byte string.
+    func getByteString () -> String {
+        let byteString = self.geoJSONData(usingEncoding: 1).base64EncodedString()
+        return byteString
+    }
+    
+    // Convert from byte string to mglpolyline.
+    class func PolylineFromByteString (byteString : String) -> MGLPolyline {
+        let data = Data(base64Encoded: byteString)
+        let polyline = MGLPolyline.loadPolyLineFromGEOJSON(polyLineData: data!)
         
-        // Configure Annotations.
-        let startAnnotation = MGLPointAnnotation()
-        startAnnotation.coordinate = drive.start.coordinate
-        startAnnotation.title = drive.start.title
-        startAnnotation.subtitle = drive.start.subtitle
-        
-        let endAnnotation = MGLPointAnnotation()
-        endAnnotation.coordinate = drive.end.coordinate
-        endAnnotation.title = drive.end.title
-        endAnnotation.subtitle = drive.end.subtitle
-        
-        // Set annotations.
-        mapView.addAnnotation(startAnnotation)
-        mapView.addAnnotation(endAnnotation)
-        
-        // Check if this is a hitched drive.
-        if hitch != nil {
-            
-            let pickUpAnnotation = MGLPointAnnotation()
-            pickUpAnnotation.coordinate = hitch!.pickUpPlace.coordinate
-            pickUpAnnotation.title = hitch!.pickUpPlace.title
-            pickUpAnnotation.subtitle = hitch!.pickUpPlace.subtitle
-            
-            let dropOffAnnotation = MGLPointAnnotation()
-            dropOffAnnotation.coordinate = hitch!.dropOffPlace.coordinate
-            dropOffAnnotation.title = hitch!.dropOffPlace.title
-            dropOffAnnotation.subtitle = hitch!.dropOffPlace.subtitle
-            
-            mapView.addAnnotation(pickUpAnnotation)
-            mapView.addAnnotation(dropOffAnnotation)
-            mapView.addAnnotations(hitch!.polylines)
-            
-        } else {
-            mapView.add(drive.polyline)
-        }
-        
-        mapView.showAnnotations(mapView.annotations!, animated: false)
+        return polyline!
     }
     
     // Convert from MapKit Polyline to MapBox Polyline.
@@ -104,4 +75,6 @@ class Mapping {
         
         return polyLine
     }
+
+    
 }

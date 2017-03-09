@@ -255,8 +255,8 @@ class LocationSearchVC: UIViewController, UITextFieldDelegate, UITableViewDelega
         
         // Create directions request.
         let request = MKDirectionsRequest()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: start.coordinate!))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: end.coordinate!))
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: start.coordinate))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: end.coordinate))
         request.requestsAlternateRoutes = false
         request.transportType = .automobile
         
@@ -330,7 +330,7 @@ class LocationSearchVC: UIViewController, UITextFieldDelegate, UITableViewDelega
                     }
                     
                     self.isDrivingDrive?.startDateTime = (self.isDrivingDrive?.endDateTime.subtractTimeInterval(timeInteral: (route?.expectedTravelTime)!))!
-                    self.isDrivingDrive?.calculatePolyLine(route: route!)
+                    self.isDrivingDrive?.polyline = MGLPolyline.MKPolylineToMGLPolyine(mkPolyline: (route?.polyline)!)
                     driveDetailsVC.drive = self.isDrivingDrive
                     
                     // Perform transition.
