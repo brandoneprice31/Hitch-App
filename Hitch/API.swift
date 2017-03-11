@@ -169,6 +169,27 @@ class API {
     
     
     
+    /* Function that is supposed to delete a user in the data base:
+     * returns success, error
+     */
+    class func deleteUser (token: String, completionHandler: @escaping (URLResponse) -> Void) {
+        
+        API.performRequest(requestType: "DELETE", urlPath: "users/delete/", json: nil, token: token, completionHandler: {
+            (response, _) in
+            
+            if response.statusCode != 204 {
+                completionHandler(URLResponse.Error)
+                
+            } else {
+                User.logOutCurrentUser()
+                completionHandler(URLResponse.Success)
+            }
+        })
+    }
+    
+    
+    
+    
     /* Function that gets all of the user's drive objects:
      * returns Success, Error
      */

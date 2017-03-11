@@ -27,6 +27,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // Number of days ahead.
     let daysAhead = 7
     
+    @IBOutlet var instructionsView: UIView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var profileImageButton: UIButton!
     
@@ -37,6 +38,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Format ProfileImageButton.
         loadProfile()
+        instructionsView.alpha = 1.0
         
         /* Print userinfo.
         let defaults = UserDefaults()
@@ -186,6 +188,9 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cities = ["Boston","New-York-City"].map({x -> String in return (x + " city-image")})
         
         
+        
+        
+        
         // CONSTRUCT ALL CELLS.
         
         if cities.count != 0 {
@@ -260,10 +265,15 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     allCells.append("SeparatorWhite 2")
                 }
             }
-            
-            // Append a spacer at the bottom.
-            allCells.append("SeparatorWhite 8")
         }
+        if allCells.count > 0 {
+            // We were able to load shit.
+            allCells.removeLast()
+        } else {
+            // Not able to load anything.
+        }
+        
+        allCells.append("SeparatorClear 180")
         
         self.tableView.beginUpdates()
         
@@ -281,7 +291,6 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.tableView.insertRows(at: newRows, with: .top)
         
         self.tableView.endUpdates()
-
 
     }
     
@@ -440,9 +449,12 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.pushViewController(settingsVC!, animated: false)
     }
 
+    // Goto Profile VC.
     @IBAction func profileButtonClicked(_ sender: Any) {
         let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "ProfileVC") as! ProfileVC
         profileVC.user = User.getCurrentUser()!
+        profileVC.hitches = self.unsortedHitches
+        profileVC.drives = self.unsortedDrives
         
         let transition: CATransition = Design.slidePushFromLeftTransition()
         self.navigationController?.view.layer.add(transition, forKey: nil)

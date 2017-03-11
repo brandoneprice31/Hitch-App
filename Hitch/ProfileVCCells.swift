@@ -79,3 +79,47 @@ class UserInformationCell : UITableViewCell, UITextFieldDelegate {
         super.init(coder: aDecoder)
     }
 }
+
+class HeaderCell : UITableViewCell {
+    
+    @IBOutlet var titleLabel: UILabel!
+    
+    func configure (title: String) {
+        titleLabel.text = title
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+}
+
+class GenericHitchDriveCell : UITableViewCell {
+    
+    @IBOutlet var startTimeLabel: UILabel!
+    @IBOutlet var endTimeLabel: UILabel!
+    @IBOutlet var startPlaceLabel: UILabel!
+    @IBOutlet var endPlaceLabel: UILabel!
+    @IBOutlet var box2: UILabel!
+    
+    func configure (drive: Drive?, hitch: Hitch?) {
+        
+        box2.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4)
+        
+        if drive != nil {
+            startTimeLabel.text = drive!.startDateTime.time()
+            endTimeLabel.text = drive!.endDateTime.time()
+            startPlaceLabel.text = drive!.start.title
+            endPlaceLabel.text = drive!.end.title
+            
+        } else if hitch != nil {
+            startTimeLabel.text = hitch!.pickUpDateTime.time()
+            endTimeLabel.text = hitch!.dropOffDateTime.time()
+            startPlaceLabel.text = hitch!.pickUpPlace.title
+            endPlaceLabel.text = hitch!.dropOffPlace.title
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+}

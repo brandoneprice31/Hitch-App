@@ -12,6 +12,8 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet var tableView: UITableView!
     var user : User!
+    var hitches = [Hitch]()
+    var drives = [Drive]()
     var allCells : [String]!
     var amEditing : Bool = false
     var profileImageChanged : UIImage? = nil
@@ -34,7 +36,35 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // Configure table view.
     func configureTableView () {
+        
+        // Load person info.
         allCells = ["SeparatorCell 12", "ProfileImageCell", "SeparatorCell 12", "UserInformationCell"]
+        
+        
+        // Load hitches.
+        if hitches.count > 0 {
+            
+            allCells.append("HeaderCell 45 Hitches")
+            
+            for hitchIndex in Array(0..<hitches.count) {
+                
+                allCells.append("HitchCell \(hitchIndex)")
+                allCells.append("SeparatorCell 8")
+            }
+        }
+        
+        
+        // Load drives.
+        if drives.count > 0 {
+            
+            allCells.append("HeaderCell 45 Drives")
+            
+            for driveIndex in Array(0..<drives.count) {
+                
+                allCells.append("DriveCell \(driveIndex)")
+                allCells.append("SeparatorCell 8")
+            }
+        }
         
         tableView.reloadData()
     }
@@ -53,8 +83,16 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         if components[0] == "ProfileImageCell" {
             return 200.0
+            
         } else if components[0] == "UserInformationCell" {
             return 90.0
+        
+        } else if components[0] == "HitchCell" {
+            return 75.0
+            
+        } else if components[0] == "DriveCell" {
+            return 75.0
+            
         } else {
             let height = Float(components[1])
             return CGFloat(height!)
@@ -66,18 +104,42 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let components = allCells[indexPath.row].components(separatedBy: " ")
         
         if components[0] == "ProfileImageCell" {
-            
+            // Profile Image cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileImageCell") as! ProfileImageCell
             cell.configure(user: self.user, amEditing: self.amEditing, buttonClickedSelector: #selector(ProfileVC.profileImageButtonClicked), vc: self)
             return cell
             
         } else if components[0] == "UserInformationCell" {
-            
+            // User information cell (first name / last name)
             let cell = tableView.dequeueReusableCell(withIdentifier: "UserInformationCell") as! UserInformationCell
             cell.configure(user: self.user, amEditing: self.amEditing)
             return cell
             
+        } else if components[0] == "HitchCell" {
+            // Hitch cell.
+            
+            let hitch = self.hitches[Int(components[1])!]
+            let cell = tableView.dequeueReusableCell(withIdentifier: "GenericHitchDriveCell") as! GenericHitchDriveCell
+            cell.configure(drive: nil, hitch: hitch)
+            return cell
+            
+        } else if components[0] == "DriveCell" {
+            // Drive cell.
+            
+            let drive = self.drives[Int(components[1])!]
+            let cell = tableView.dequeueReusableCell(withIdentifier: "GenericHitchDriveCell") as! GenericHitchDriveCell
+            cell.configure(drive: drive, hitch: nil)
+            return cell
+            
+        } else if components[0] == "HeaderCell" {
+            // Header cell.
+            let title = components[2]
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell") as! HeaderCell
+            cell.configure(title: title)
+            return cell
+        
         } else {
+            // Separator cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "WhiteSeparatorCell")
             return cell!
         }

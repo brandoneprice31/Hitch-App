@@ -16,7 +16,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var sections = ["Account", "Information", " "]
     
     // Rows in each section.
-    var accountRows = ["Edit Profile","Payment"]
+    var accountRows = ["Edit Account","Payment"]
     var informationRows = ["Help / Contact","Feedback","User Agreement"]
     var logoutSignOutRows = ["Logout", "Delete Account"]
     
@@ -113,16 +113,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         DispatchQueue.main.sync() {
                             self.unPauseViewAndRemoveAnimation(view: self.view)
                             if response == URLResponse.Error {
-                                let transition: CATransition = Design.moveDownTransition()
-                                self.navigationController?.view.layer.add(transition, forKey: nil)
-                                let nav = self.storyboard?.instantiateViewController(withIdentifier: "SignUpNav")
-                                self.present(nav!, animated: false, completion: nil)
+                                self.gotoSignUpNav()
                             } else {
                                 // Transition to sing up nav.
-                                let transition: CATransition = Design.moveDownTransition()
-                                self.navigationController?.view.layer.add(transition, forKey: nil)
-                                let nav = self.storyboard?.instantiateViewController(withIdentifier: "SignUpNav")
-                                self.present(nav!, animated: false, completion: nil)
+                                self.gotoSignUpNav()
                             }
                         }
                     })
@@ -133,16 +127,27 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     
                 })
             } else {
-                // Delete account row.  Warn user.
+                // Warn user before deleting.
                 self.presentOkayCancelAlertView(title: "Delete Account", message: "Are you sure you want to delete your account?",
                                                 okayHandler: {UIAlertAction -> Void in
                                                     
-                                                    // Log the user out and present the sign up nav.
-                                                    CoreDataAuthentication.deleteCurrentUserAccount()
-                                                    let transition: CATransition = Design.moveDownTransition()
-                                                    self.navigationController?.view.layer.add(transition, forKey: nil)
-                                                    let nav = self.storyboard?.instantiateViewController(withIdentifier: "SignUpNav")
-                                                    self.present(nav!, animated: false, completion: nil)
+                                                    // Pause everything and attempt to delete the user.
+                                                    self.pauseViewWithAnimation(view: self.view, animationName: "spinner", text: "Deleting...")
+                                                    API.deleteUser(token: (User.getCurrentUser()?.token)!, completionHandler: {
+                                                        (response) in
+                                                        
+                                                        // Handle the results on the main queue.
+                                                        DispatchQueue.main.sync() {
+                                                            self.unPauseViewAndRemoveAnimation(view: self.view)
+                                                            if response == URLResponse.Error {
+                                                                // Warn the user.
+                                                                self.presentNormalAlertView(title: "Error", message: "Check your internet connection...")
+                                                            } else {
+                                                                // Goto sign up nav.
+                                                                self.gotoSignUpNav()
+                                                            }
+                                                        }
+                                                    })
                                                     
                 }                               , cancelHandler: {UIAlertAction -> Void in
                     
@@ -153,6 +158,14 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
             }
         }
+    }
+    
+    func gotoSignUpNav () {
+        // Transition to sing up nav.
+        let transition: CATransition = Design.moveDownTransition()
+        self.navigationController?.view.layer.add(transition, forKey: nil)
+        let nav = self.storyboard?.instantiateViewController(withIdentifier: "SignUpNav")
+        self.present(nav!, animated: false, completion: nil)
     }
 
     @IBAction func backButtonClicked(_ sender: Any) {
