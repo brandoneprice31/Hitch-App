@@ -113,8 +113,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         DispatchQueue.main.sync() {
                             self.unPauseViewAndRemoveAnimation(view: self.view)
                             if response == URLResponse.Error {
-                                self.presentNormalAlertView(title: "Error", message: "Check your internet connection")
-                                self.tableView.deselectRow(at: indexPath, animated: true)
+                                let transition: CATransition = Design.moveDownTransition()
+                                self.navigationController?.view.layer.add(transition, forKey: nil)
+                                let nav = self.storyboard?.instantiateViewController(withIdentifier: "SignUpNav")
+                                self.present(nav!, animated: false, completion: nil)
                             } else {
                                 // Transition to sing up nav.
                                 let transition: CATransition = Design.moveDownTransition()

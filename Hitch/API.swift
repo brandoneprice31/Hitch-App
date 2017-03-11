@@ -14,8 +14,8 @@ import CoreLocation
 class API {
     
     // ROOT URL
-    static let rootURLString : String = "http://127.0.0.1:8000/app/"
-    //static let rootURLString : String = "https://sheltered-citadel-17296.herokuapp.com/app/"
+    //static let rootURLString : String = "http://127.0.0.1:8000/app/"
+    static let rootURLString : String = "https://sheltered-citadel-17296.herokuapp.com/app/"
     
     
     
@@ -69,8 +69,6 @@ class API {
                     decodedImage = UIImage(data: decodedData! as Data)
                 }
                 
-                print("\(json_user_data)")
-                
                 let user = User(id: json_user_data["id"] as! Int, firstName: (json_user_data["first_name"] as? String)!, lastName: (json_user_data["last_name"] as? String)!, email: json_user_data["email"] as! String, token: (json_user_data["token"]
                     as? String)!, profileImage: decodedImage)
                 
@@ -84,6 +82,27 @@ class API {
         })
     }
     
+    
+    /* Function that updates the user in the data base:
+     * returns success, error
+     */
+    class func updateUser (token: String, user: User, fields: [String],completionHandler: @escaping (URLResponse) -> Void) {
+        
+        // Get json.
+        let json : [String : Any] = user.getJSON(fields: fields)
+        
+        // Perform API request.
+        API.performRequest(requestType: "POST", urlPath: "users/update/", json: json, token: token, completionHandler: {
+            (response, _) in
+            
+            switch response.statusCode {
+            case 200:
+                completionHandler(URLResponse.Success)
+            default:
+                completionHandler(URLResponse.Error)
+            }
+        })
+    }
     
     
     /* Function that logs out the user in the data base:
@@ -120,6 +139,7 @@ class API {
         
         // Send profile image data.
         if profileImage != nil {
+            
             let imageData = UIImagePNGRepresentation(profileImage!)
             let profile_image_data = imageData?.base64EncodedString()
             json["profile_image"] = profile_image_data!
@@ -137,7 +157,7 @@ class API {
                 if json != nil {
                     
                     let json_user_data = json as! [String: Any]
-                    user = User(id: json_user_data["id"] as! Int, firstName: (json_user_data["first_name"] as? String)!, lastName: (json_user_data["last_name"] as? String)!, email: json_user_data["email"] as! String, token: (json_user_data["token"] as? String)!, profileImage: nil)
+                    user = User.loadFromJSON(json: json_user_data)
                 }
                 
                 completionHandler(URLResponse.Success, user)

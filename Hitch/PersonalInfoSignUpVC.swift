@@ -32,10 +32,14 @@ class PersonalInfoSignUpVC: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        let cameraImageView = UIImageView(image: UIImage(named: "camera"))
         profileImageButton.layer.cornerRadius = profileImageButton.frame.size.height / 2.0
         profileImageButton.layer.masksToBounds = true
         profileImageButton.layer.borderWidth = 0
         signUpButton.layer.cornerRadius = 5.0
+        let cameraWidth = CGFloat(60.0)
+        cameraImageView.frame = CGRect(x: profileImageButton.bounds.midX - cameraWidth / 2.0, y: 80.0, width: cameraWidth, height: cameraWidth)
+        profileImageButton.imageView?.addSubview(cameraImageView)
     }
     
     override func viewDidAppear(_ animated: Bool) {

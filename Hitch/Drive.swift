@@ -13,7 +13,7 @@ import Mapbox
 import CoreData
 
 // Class for storing routes.
-class Drive {
+class Drive : Any {
     
     // ID
     var id : Int = 0
@@ -110,8 +110,20 @@ class Drive {
             // Check to see if the iter datetime is part of the repeated week day.
             if self.repeatedWeekDays.contains(iterDateTime.weekDay) {
                 
+                // Find the hitch that corresponds to this day.
+                var hitchList = [Hitch]()
+                for driveHitch in self.hitches {
+                    if driveHitch.repeatedWeekDays.contains(iterDateTime.weekDay) {
+                        // Hitch occurs on this week day.
+                        hitchList = [driveHitch]
+                    } else if driveHitch.repeatedWeekDays.count == 0 && driveHitch.dropOffDateTime.date <= iterDateTime.addTimeInterval(timeInteral: timeInterval).date && iterDateTime.date <= driveHitch.dropOffDateTime.date {
+                        // Hitch occurs during this drive time / day.
+                        hitchList = [driveHitch]
+                    }
+                }
+                
                 // Add this drive.
-                let drive = Drive(id: self.id, driver: self.driver, start: self.start, end: self.end, startDateTime: iterDateTime, endDateTime: iterDateTime.addTimeInterval(timeInteral: timeInterval), repeatedWeekDays: self.repeatedWeekDays, polyline: self.polyline, hitches: self.hitches)
+                let drive = Drive(id: self.id, driver: self.driver, start: self.start, end: self.end, startDateTime: iterDateTime, endDateTime: iterDateTime.addTimeInterval(timeInteral: timeInterval), repeatedWeekDays: self.repeatedWeekDays, polyline: self.polyline, hitches: hitchList)
                 drive.estimagedPickUpDateTime = self.estimagedPickUpDateTime
                 driveList.append(drive)
 
@@ -401,6 +413,12 @@ class Drive {
         })
         
         
+    }
+    
+    
+    func copy () -> Drive {
+        
+        return Drive(id: id, driver: driver, start: start, end: end, startDateTime: startDateTime, endDateTime: endDateTime, repeatedWeekDays: repeatedWeekDays, polyline: polyline, hitches: hitches)
     }
 
     

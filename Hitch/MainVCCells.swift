@@ -18,7 +18,7 @@ class MainVCDriveCell : UITableViewCell {
     @IBOutlet var box2: UILabel!
     @IBOutlet var isAHikerLabel: UILabel!
     
-    func configure (drive: Drive) {
+    func configure (drive: Drive, hitch: Hitch?) {
         
         // Configure times.
         startTimeLabel.text = drive.startDateTime.time()
@@ -32,8 +32,8 @@ class MainVCDriveCell : UITableViewCell {
         box2.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4.0)
         
         // Configure hiker label.
-        if drive.hitches.count != 0 {
-            isAHikerLabel.text = "Hitchhiker:"
+        if hitch != nil {
+            isAHikerLabel.text = "Hitchhiker: " + hitch!.hitchHiker.firstName + " " + hitch!.hitchHiker.lastName
         } else {
             isAHikerLabel.text = "No hitchhiker"
             isAHikerLabel.adjustsFontSizeToFitWidth = true
@@ -85,14 +85,7 @@ class MainVCHitchedDriveCell: UITableViewCell {
     @IBOutlet var hitchHikerLabel: UILabel!
     @IBOutlet var box4: UILabel!
     
-    func configure (drive: Drive, hitchID : Int) {
-        
-        var hitch : Hitch!
-        for driveHitch in drive.hitches {
-            if driveHitch.id == hitchID {
-                hitch = driveHitch
-            }
-        }
+    func configure (drive: Drive, hitch : Hitch) {
         
         // Configure Box
         box4.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 4.0)

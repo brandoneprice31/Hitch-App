@@ -22,6 +22,8 @@
 		A870D9A91E4BA0AC00BAA3C3 /* DCTimeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870D9A81E4BA0AC00BAA3C3 /* DCTimeVC.swift */; };
 		A870D9AB1E4BAF2B00BAA3C3 /* DCPriceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870D9AA1E4BAF2B00BAA3C3 /* DCPriceVC.swift */; };
 		A87A60391E70CF0A003F8962 /* MGLPolyline+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87A60381E70CF0A003F8962 /* MGLPolyline+extension.swift */; };
+		A87A603B1E731DBA003F8962 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87A603A1E731DBA003F8962 /* ProfileVC.swift */; };
+		A87A603D1E731DEC003F8962 /* ProfileVCCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87A603C1E731DEC003F8962 /* ProfileVCCells.swift */; };
 		A87E686D1E37E6D000F2C097 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87E686C1E37E6D000F2C097 /* LoginVC.swift */; };
 		A87E686F1E37EEBE00F2C097 /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87E686E1E37EEBE00F2C097 /* SignUpVC.swift */; };
 		A87E68711E3801C800F2C097 /* PersonalInfoSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87E68701E3801C800F2C097 /* PersonalInfoSignUpVC.swift */; };
@@ -83,6 +85,8 @@
 		A870D9A81E4BA0AC00BAA3C3 /* DCTimeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCTimeVC.swift; sourceTree = "<group>"; };
 		A870D9AA1E4BAF2B00BAA3C3 /* DCPriceVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCPriceVC.swift; sourceTree = "<group>"; };
 		A87A60381E70CF0A003F8962 /* MGLPolyline+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MGLPolyline+extension.swift"; sourceTree = "<group>"; };
+		A87A603A1E731DBA003F8962 /* ProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
+		A87A603C1E731DEC003F8962 /* ProfileVCCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileVCCells.swift; sourceTree = "<group>"; };
 		A87E686C1E37E6D000F2C097 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		A87E686E1E37EEBE00F2C097 /* SignUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		A87E68701E3801C800F2C097 /* PersonalInfoSignUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalInfoSignUpVC.swift; sourceTree = "<group>"; };
@@ -279,6 +283,8 @@
 				A8E4DF2D1E3E406A007DC2A0 /* MainVC.swift */,
 				A8F8C7BD1E54A3350015F7A7 /* MainVCCells.swift */,
 				A87F3ABD1E4120060023C314 /* LocationSearchVC.swift */,
+				A87A603A1E731DBA003F8962 /* ProfileVC.swift */,
+				A87A603C1E731DEC003F8962 /* ProfileVCCells.swift */,
 			);
 			name = MainNav;
 			sourceTree = "<group>";
@@ -549,6 +555,7 @@
 			files = (
 				A89B57391E44F001005F0ABB /* Place.swift in Sources */,
 				A870D9AB1E4BAF2B00BAA3C3 /* DCPriceVC.swift in Sources */,
+				A87A603B1E731DBA003F8962 /* ProfileVC.swift in Sources */,
 				A83941AE1E1E9548001BB185 /* Drive.swift in Sources */,
 				A8E4DF2E1E3E406A007DC2A0 /* MainVC.swift in Sources */,
 				A85CC69C1E43B3EF0011E84B /* HikeTBVCells.swift in Sources */,
@@ -564,6 +571,7 @@
 				A8367ABB1E46485E00E2343A /* SettingsVC.swift in Sources */,
 				A8F8C7C01E5A48BA0015F7A7 /* ThreadingOperator.swift in Sources */,
 				A87E68711E3801C800F2C097 /* PersonalInfoSignUpVC.swift in Sources */,
+				A87A603D1E731DEC003F8962 /* ProfileVCCells.swift in Sources */,
 				A87F3ABE1E4120060023C314 /* LocationSearchVC.swift in Sources */,
 				A80345771E6774C200A9294E /* Hitch.swift in Sources */,
 				A8C366511E2BF7C300623C8F /* ParentProtocol.swift in Sources */,

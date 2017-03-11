@@ -165,6 +165,35 @@ class User {
         // Build and return user object.
         return User(id: id, firstName: first_name, lastName: last_name, email: email, token: token, profileImage: profileImage)
     }
+    
+    func getJSON (fields: [String]) -> [String : Any] {
+        
+        var json = [String : Any]()
+        
+        for field in fields {
+            
+            if field == "first_name" {
+                json["first_name"] = self.firstName
+            } else if field == "last_name" {
+                json["last_name"] = self.lastName
+            } else if field == "profile_image" {
+                json["profile_image"] = self.encodeImage()!
+            }
+        }
+        
+        return json
+    }
+    
+    func encodeImage () -> String? {
+        if profileImage != nil {
+            let imageData = UIImagePNGRepresentation(self.profileImage!)
+            let profile_image_data = imageData?.base64EncodedString()
+            return profile_image_data
+        } else {
+            return nil
+        }
+        
+    }
 
     
     // CORE DATA METHODS

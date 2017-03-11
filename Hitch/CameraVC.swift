@@ -17,6 +17,7 @@ class CameraVC: UIViewController {
     var output: AVCaptureStillImageOutput?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var tempImage = UIImage()
+    var nextVC = ""
     
     // IBOutlets.
     @IBOutlet var triggerButton: UIButton!
@@ -127,13 +128,26 @@ class CameraVC: UIViewController {
     
     @IBAction func saveButtonClicked(_ sender: Any) {
         
-        // Send image to previous view controller.
-        let personInfoVC : PersonalInfoSignUpVC = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.index(of: self))! - 1] as! PersonalInfoSignUpVC
-        
-        personInfoVC.profileImage = tempImage
-        
-        // Present previous view controller.
-        let _ = self.navigationController?.popViewController(animated: true)
+        if nextVC == "ProfileVC" {
+            // Send image to previous view controller.
+            let profileVC : ProfileVC = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.index(of: self))! - 1] as! ProfileVC
+            
+            profileVC.profileImageChanged = tempImage.image(withRotation: 3 * CGFloat.pi / 2)
+            profileVC.user = User(id: profileVC.user.id, firstName: profileVC.user.firstName, lastName: profileVC.user.lastName, email: profileVC.user.email, token: profileVC.user.token, profileImage: profileVC.profileImageChanged)
+            profileVC.configureTableView()
+            
+            // Present previous view controller.
+            let _ = self.navigationController?.popViewController(animated: true)
+            
+        } else {
+            // Send image to previous view controller.
+            let personInfoVC : PersonalInfoSignUpVC = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.index(of: self))! - 1] as! PersonalInfoSignUpVC
+            
+            personInfoVC.profileImage = tempImage.image(withRotation: 3 * CGFloat.pi / 2)
+            
+            // Present previous view controller.
+            let _ = self.navigationController?.popViewController(animated: true)
+        }
     }
 
     /*
@@ -145,5 +159,33 @@ class CameraVC: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+}
 
+extension UIImage {
+    func image(withRotation radians: CGFloat) -> UIImage {
+        let cgImage = self.cgImage!
+        let LARGEST_SIZE = CGFloat(max(self.size.width, self.size.height))
+        let context = CGContext.init(data: nil, width:Int(LARGEST_SIZE), height:Int(LARGEST_SIZE), bitsPerComponent: cgImage.bitsPerComponent, bytesPerRow: 0, space: cgImage.colorSpace!, bitmapInfo: cgImage.bitmapInfo.rawValue)!
+        
+        var drawRect = CGRect.zero
+        drawRect.size = CGSize(width: self.size.height, height: self.size.width)
+        let drawOrigin = CGPoint(x: (LARGEST_SIZE - self.size.height) * 0.5,y: (LARGEST_SIZE - self.size.width) * 0.5)
+        drawRect.origin = drawOrigin
+        var tf = CGAffineTransform.identity
+        tf = tf.translatedBy(x: LARGEST_SIZE * 0.5, y: LARGEST_SIZE * 0.5)
+        tf = tf.rotated(by: CGFloat(radians))
+        tf = tf.translatedBy(x: LARGEST_SIZE * -0.5, y: LARGEST_SIZE * -0.5)
+        context.concatenate(tf)
+        context.draw(cgImage, in: drawRect)
+        var rotatedImage = context.makeImage()!
+        
+        drawRect = drawRect.applying(tf)
+        
+        rotatedImage = rotatedImage.cropping(to: drawRect)!
+        let resultImage = UIImage(cgImage: rotatedImage)
+        return resultImage
+        
+        
+    }
 }

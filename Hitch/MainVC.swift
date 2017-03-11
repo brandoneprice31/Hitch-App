@@ -17,8 +17,10 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var changedUnsorted : Bool = false
     
     // For TableView Construction.
+    var pendingDrives = [Drive]()
+    var pendingHitches = [Hitch]()
     var drives = [Drive]()
-    var hitches = [Drive]()
+    var hitches = [Hitch]()
     var cities = [String]()
     var allCells = [String]()
     
@@ -34,11 +36,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Do any additional setup after loading the view.
         
         // Format ProfileImageButton.
-        profileImageButton.layer.cornerRadius = profileImageButton.frame.size.height / 2.0
-        profileImageButton.layer.masksToBounds = true
-        profileImageButton.layer.borderWidth = 0
-        profileImageButton.setImage(User.getCurrentUser()?.getProfileImage(), for: .normal)
-        profileImageButton.imageView?.contentMode = .scaleAspectFill
+        loadProfile()
         
         /* Print userinfo.
         let defaults = UserDefaults()
@@ -94,6 +92,9 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         
+        // Reload profile image.
+        loadProfile()
+        
         if changedUnsorted {
             loadAllCellFromUnsortedLists()
             changedUnsorted = false
@@ -109,36 +110,77 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return .lightContent
     }
     
+    func loadProfile () {
+        profileImageButton.layer.cornerRadius = profileImageButton.frame.size.height / 2.0
+        profileImageButton.layer.masksToBounds = true
+        profileImageButton.layer.borderWidth = 0
+        profileImageButton.setImage(User.getCurrentUser()?.getProfileImage(), for: .normal)
+        profileImageButton.imageView?.contentMode = .scaleAspectFill
+    }
+    
     func loadAllCellFromUnsortedLists () {
         
         allCells = [String]()
         drives = [Drive]()
-        hitches = [Drive]()
+        hitches = [Hitch]()
         cities = [String]()
         
         // Go through each drive and push it into drives.
         for drive in self.unsortedDrives {
             
-            // Print the drives you fetched for debugging.
-            print("")
-            print("\(drive.start.title) -> \(drive.end.title) | \(drive.startDateTime.time()) -> \(drive.endDateTime.time()) | repeating: \(drive.getLongRepeatedWeekDays()) starting \(drive.startDateTime.abbreviatedDate())")
-            print("")
+            // Find the drives who have hitches that are pending.
+            for hitch in drive.hitches {
+                
+                if !hitch.accepted {
+                    // If it hasn't been accepted yet, then we need to add this drive to the pending array.
+                    let driveCopy = drive.copy()
+                    driveCopy.hitches = [hitch]
+                    pendingDrives.append(driveCopy)
+                }
+            }
             
             // Append upcoming drives.
-            //let upComingDrivesFromDrive = drive.getDrivesDaysFromNow(startDateTime: DateTime.currentDateTime, nDays: daysAhead)
             let upComingDrivesFromDrive = drive.getDriveCopies(startDateTime: DateTime.currentDateTime, endDateTime: DateTime.currentDateTime.add(years: 0, months: 0, days: 10, hours: 0, minutes: 0))
             drives += upComingDrivesFromDrive
         }
         
-        // Sort drives.
-        drives.sort(by: {(x: Drive, y: Drive) -> Bool in return (x.startDateTime.date < y.startDateTime.date)})
         
-        
-        /* CONSTRUCT HITCHES.
+        // CONSTRUCT HITCHES.
         for hitch in self.unsortedHitches {
-            self.hitches.append(hitch.getDrive()!)
-        }*/
+            
+            if !hitch.accepted {
+                // Get all pending.
+                pendingHitches.append(hitch)
+            } else {
+                // Get all upcoming hitches.
+                hitches.append(hitch)
+            }
+        }
         
+        // Sort these.
+        var drivesAndHitches = [AnyObject]()
+        drivesAndHitches = drivesAndHitches + drives
+        drivesAndHitches = drivesAndHitches + hitches
+        drivesAndHitches.sort(by:
+            {(x,y) -> Bool in
+                
+                var xDate : Date
+                var yDate : Date
+                
+                if x as? Drive != nil {
+                    xDate = (x as! Drive).startDateTime.date
+                } else {
+                    xDate = (x as! Hitch).pickUpDateTime.date
+                }
+                
+                if y as? Drive != nil {
+                    yDate = (y as! Drive).startDateTime.date
+                } else {
+                    yDate = (y as! Hitch).pickUpDateTime.date
+                }
+                
+                return xDate < yDate
+        })
         
         // CONSTRUCT CITIES.
         cities = ["Boston","New-York-City"].map({x -> String in return (x + " city-image")})
@@ -158,44 +200,63 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        if unsortedHitches.count != 0 {
+        // PENDING DRIVES AND HITCHES
+        if pendingDrives.count != 0 || pendingHitches.count != 0  {
             
             allCells.append("PendingHeader 45")
             
-            for hitchIndex in Array(0..<self.unsortedHitches.count) {
+            for driveIndex in Array(0..<pendingDrives.count) {
                 
-                //let hitch = self.hitches[hitchIndex]
+                allCells.append("HitchedDriveCell \(driveIndex) pending")
+                allCells.append("SeparatorWhite 8")
+            }
+            
+            for hitchIndex in Array(0..<pendingHitches.count) {
                 
                 allCells.append("HitchCell \(hitchIndex)")
                 allCells.append("SeparatorWhite 8")
             }
         }
         
-        if drives.count != 0 {
+        // UPCOMING DRIVES AND HITCHES
+        if drivesAndHitches.count != 0 {
             
-            // Make first thing header and day cell.
-            allCells.removeLast()
             allCells.append("DriveCellHeader 45")
-            allCells.append("DayCell " + (drives.first?.startDateTime.longWeekDay())! + " " + drives.first!.startDateTime.abbreviatedDate())
-            
-            var currentDateTime = drives.first!.startDateTime
+            var currentDateTime = DateTime.currentDateTime.add(years: 0, months: 0, days: -1, hours: 0, minutes: 0)
+
             
             // Go through each drive.
-            for driveIndex in Array(0..<drives.count) {
+            for i in Array(0..<drivesAndHitches.count) {
                 
-                let drive = drives[driveIndex]
+                let driveOrHitch = drivesAndHitches[i]
+                var drive : Drive? = nil
+                var hitch : Hitch? = nil
+                if driveOrHitch as? Drive != nil {
+                    drive = driveOrHitch as? Drive
+                } else {
+                    hitch = driveOrHitch as? Hitch
+                }
                 
-                if drive.startDateTime.isDaysAheadOf(dateTime2: currentDateTime) {
-                    // Append new daycell.
-                    currentDateTime = drive.startDateTime
-                    allCells.append("SeparatorWhite 8")
-                    allCells.append("DayCell " + (drive.startDateTime.longWeekDay()) + " " + drive.startDateTime.abbreviatedDate())
-                    allCells.append("DriveCell \(driveIndex)")
-                    allCells.append("SeparatorWhite 2")
+                if (drive != nil && drive!.startDateTime.isDaysAheadOf(dateTime2: currentDateTime)) || (hitch != nil && hitch!.pickUpDateTime.isDaysAheadOf(dateTime2: currentDateTime)) {
                     
+                    // Append new daycell.
+                    currentDateTime = drive == nil ? hitch!.pickUpDateTime : drive!.startDateTime
+                    allCells.append("SeparatorWhite 8")
+                    allCells.append("DayCell " + (currentDateTime.longWeekDay()) + " " + currentDateTime.abbreviatedDate())
+                    
+                    if drive != nil {
+                        let index = drives.index(where: {(x) -> Bool in return x.startDateTime.date == drive!.startDateTime.date})
+                        allCells.append("DriveCell \(index!) notPending")
+                    } else {
+                        let index = hitches.index(where: {(x) -> Bool in return x.pickUpDateTime.date == hitch!.pickUpDateTime.date})
+                        allCells.append("HitchCell \(index!) notPending")
+                    }
+                    
+                    allCells.append("SeparatorWhite 2")
+                        
                 } else {
                     // Append new drive cell.
-                    allCells.append("DriveCell \(driveIndex)")
+                    allCells.append("DriveCell \(i) notPending")
                     allCells.append("SeparatorWhite 2")
                 }
             }
@@ -285,6 +346,10 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             // Drive Cell.
             return 148.0
             
+        } else if cellType == "MainVCHitchedDriveCell"{
+            // Hitched Drive cell.
+            return 224.0
+            
         } else if cellType == "MainVCCityHeader" {
             // City Header.
             return 45.0
@@ -320,11 +385,36 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             cell.configure(hitch: self.unsortedHitches[hitchIndex!])
             return cell
             
+        }  else if cellType == "MainVCHitchedDriveCell"{
+            // Hitched Drive Cell.
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellType) as! MainVCHitchedDriveCell
+            let driveIndex = Int(cellComponents[1])
+            let pending = cellComponents[2] == "pending"
+            if pending {
+                cell.configure(drive: self.pendingDrives[driveIndex!], hitch: self.pendingDrives[driveIndex!].hitches[0])
+            } else {
+                cell.configure(drive: self.drives[driveIndex!], hitch: self.drives[driveIndex!].hitches[0])
+            }
+           
+            return cell
+            
         } else if cellType == "MainVCDriveCell" {
             // Drive Cell.
             let cell = tableView.dequeueReusableCell(withIdentifier: cellType) as! MainVCDriveCell
             let driveIndex = Int(cellComponents[1])
-            cell.configure(drive: drives[driveIndex!])
+            let drive = drives[driveIndex!]
+            
+            var hitch : Hitch? = nil
+            
+            // See if we've been hitched.
+            if drive.hitches.count != 0 {
+                if drive.hitches[0].accepted {
+                    hitch = drive.hitches[0]
+                }
+            }
+            
+            // Configure and return cell.
+            cell.configure(drive: drives[driveIndex!], hitch: hitch)
             return cell
             
         } else if cellType == "MainVCCityCell" {
@@ -350,7 +440,14 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.pushViewController(settingsVC!, animated: false)
     }
 
-    
+    @IBAction func profileButtonClicked(_ sender: Any) {
+        let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "ProfileVC") as! ProfileVC
+        profileVC.user = User.getCurrentUser()!
+        
+        let transition: CATransition = Design.slidePushFromLeftTransition()
+        self.navigationController?.view.layer.add(transition, forKey: nil)
+        self.navigationController?.pushViewController(profileVC, animated: false)
+    }
     
     /*
      // MARK: - Navigation

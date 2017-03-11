@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Mapbox
 
-class Hitch {
+class Hitch : Any {
     
     var id : Int = 0
     var drive : Drive = Drive()
@@ -107,4 +107,56 @@ class Hitch {
         
         return json
     }
+    
+    // Get drive copies that are in a date time range.
+    func getHitchCopies (pickUpDateTime : DateTime, dropOffDateTime : DateTime) -> [Hitch] {
+        
+        // If specified end date time is before actual start date time then return empty list.
+        if dropOffDateTime.date < self.pickUpDateTime.date {
+            return []
+        }
+        
+        // If this isn't a repeating drive then just return itself in a list.
+        if self.repeatedWeekDays == [] {
+            return [self]
+        }
+        
+        var adjustedStart : DateTime
+        
+        // Check to see if the specified start date time is before the actual start date time.
+        if self.pickUpDateTime.isDaysAheadOf(dateTime2: pickUpDateTime){
+            adjustedStart = self.pickUpDateTime
+        } else {
+            adjustedStart = pickUpDateTime
+        }
+        
+        // Get the start date time interator.
+        var hitchList = [Hitch]()
+        var iterDateTime = adjustedStart
+        iterDateTime.hour = self.pickUpDateTime.hour
+        iterDateTime.minute = self.pickUpDateTime.minute
+        iterDateTime.storeDate()
+        let pickUpToDropOffTimeInterval = self.dropOffDateTime.date.timeIntervalSince(self.pickUpDateTime.date)
+        let adjustedStartToPickUpTimeInterval = self.pickUpDateTime.date.timeIntervalSince(self.adjustedStartDateTime.date)
+        
+        // Iterate through each day from start to finish.
+        while !iterDateTime.isSameDayAs(dateTime2: dropOffDateTime) {
+            
+            // Check to see if the iter datetime is part of the repeated week day.
+            if self.repeatedWeekDays.contains(iterDateTime.weekDay) {
+                
+                // Add this drive.
+                
+                let hitch = Hitch(id: self.id, drive: self.drive, hitchHiker: self.hitchHiker, adjustedStartDateTime: iterDateTime.subtractTimeInterval(timeInteral: adjustedStartToPickUpTimeInterval), pickUpPlace: self.pickUpPlace, dropOffPlace: self.dropOffPlace, pickUpDateTime: iterDateTime, dropOffDateTime: iterDateTime.addTimeInterval(timeInteral: pickUpToDropOffTimeInterval), repeatedWeekDays: self.repeatedWeekDays, accepted: self.accepted, polylines: self.polylines)
+                
+                hitchList.append(hitch)
+            }
+            
+            iterDateTime = iterDateTime.add(years: 0, months: 0, days: 1, hours: 0, minutes: 0)
+        }
+        
+        return hitchList
+        
+    }
+
 }
