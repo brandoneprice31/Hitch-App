@@ -491,7 +491,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VDc-Hq-hfs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-823" y="776"/>
+            <point key="canvasLocation" x="-823" y="929"/>
         </scene>
         <!--Main Menu-->
         <scene sceneID="4hg-L4-eZj">
@@ -502,7 +502,7 @@
                         <viewControllerLayoutGuide type="bottom" id="J9g-Vw-NMH"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ash-BP-enl">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1500"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="1200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kCr-ew-4Yt" userLabel="TopBar">
@@ -542,10 +542,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rkx-Vl-ptu" userLabel="MainView">
-                                <rect key="frame" x="0.0" y="85" width="320" height="1415"/>
+                                <rect key="frame" x="0.0" y="85" width="320" height="1115"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wy8-wj-EjM" userLabel="Instructions View">
-                                        <rect key="frame" x="0.0" y="1238" width="320" height="177"/>
+                                        <rect key="frame" x="0.0" y="938" width="320" height="177"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Tap the thumbs up to hitch a ride." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZZ3-Yu-Ksg">
                                                 <rect key="frame" x="8" y="23" width="227" height="54"/>
@@ -578,7 +578,7 @@
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="230" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZSn-kp-jnI">
-                                        <rect key="frame" x="8" y="0.0" width="304" height="1415"/>
+                                        <rect key="frame" x="8" y="0.0" width="304" height="1115"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MainVCPendingHeader" rowHeight="45" id="s6d-9R-x3U" userLabel="PendingHeader">
@@ -1329,14 +1329,14 @@
                                         </connections>
                                     </tableView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mTZ-4V-YOD">
-                                        <rect key="frame" x="237" y="1249" width="75" height="75"/>
+                                        <rect key="frame" x="237" y="949" width="75" height="75"/>
                                         <state key="normal" backgroundImage="hitch-logo"/>
                                         <connections>
                                             <action selector="hikeButtonClicked:" destination="lUg-48-W4e" eventType="touchUpInside" id="1K5-Fd-NdV"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d8k-xc-cho">
-                                        <rect key="frame" x="237" y="1332" width="75" height="75"/>
+                                        <rect key="frame" x="237" y="1032" width="75" height="75"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="75" id="gOV-zt-DFw"/>
                                             <constraint firstAttribute="width" constant="75" id="rZP-Aa-5xd"/>
@@ -1378,7 +1378,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="z5S-Fz-AG1"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="1500"/>
+                    <size key="freeformSize" width="320" height="1200"/>
                     <connections>
                         <outlet property="instructionsView" destination="wy8-wj-EjM" id="QbT-Nb-lZc"/>
                         <outlet property="profileImageButton" destination="iIN-mP-icf" id="WYE-eY-V9O"/>
@@ -1387,7 +1387,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9oB-nM-2fX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="775.35211267605632"/>
+            <point key="canvasLocation" x="75" y="1262"/>
         </scene>
         <!--ProfileVC-->
         <scene sceneID="ipl-34-vwB">
@@ -1710,7 +1710,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ri7-0l-4d2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="2120"/>
+            <point key="canvasLocation" x="75" y="54"/>
         </scene>
         <!--SettingsVC-->
         <scene sceneID="fKT-ap-kVP">
@@ -1795,7 +1795,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ce4-Ij-a10" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="969.56521739130437" y="54.619565217391312"/>
+            <point key="canvasLocation" x="971" y="-16"/>
         </scene>
         <!--Delegate-->
         <scene sceneID="2KW-KZ-DzP">
@@ -1974,7 +1974,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gvd-eG-EAd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1730.625" y="775.35211267605632"/>
+            <point key="canvasLocation" x="1731" y="926"/>
         </scene>
         <!--Drive CreateVC-->
         <scene sceneID="Fwz-46-7jv">
@@ -2154,7 +2154,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t0b-EI-XQq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1731" y="2263"/>
+            <point key="canvasLocation" x="971" y="2450"/>
         </scene>
         <!--Hike Search ResultsVC-->
         <scene sceneID="FQn-Uk-c2M">
@@ -2165,7 +2165,7 @@
                         <viewControllerLayoutGuide type="bottom" id="LCo-BZ-OgX"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="N0N-be-lzr">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oFl-ak-6Ul" userLabel="TopView">
@@ -2248,7 +2248,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="400" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="S6L-JJ-ygs">
-                                <rect key="frame" x="8" y="115" width="304" height="453"/>
+                                <rect key="frame" x="8" y="115" width="304" height="885"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -2891,6 +2891,8 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="1000"/>
                     <connections>
                         <outlet property="backButton" destination="v9j-PT-8Eg" id="AVa-Mw-Wjp"/>
                         <outlet property="forwardButton" destination="77c-fw-Zw6" id="gGi-6c-Pvx"/>
@@ -2900,7 +2902,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xPM-hx-sOY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2452.5" y="774.29577464788736"/>
+            <point key="canvasLocation" x="2507" y="1157"/>
         </scene>
         <!--Location Search-->
         <scene sceneID="MZL-bc-Qqr">
@@ -3056,7 +3058,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CuB-8m-q7J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="969" y="775"/>
+            <point key="canvasLocation" x="969" y="927"/>
         </scene>
         <!--OccurrenceVC-->
         <scene sceneID="lrI-Jx-JjD">
@@ -3149,7 +3151,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wXF-Gf-wFv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2453" y="2263"/>
+            <point key="canvasLocation" x="1817" y="2450"/>
         </scene>
         <!--TimeVC-->
         <scene sceneID="Bx9-bM-jpj">
@@ -3199,7 +3201,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rpb-1A-1LH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3167" y="2263"/>
+            <point key="canvasLocation" x="2507" y="2450"/>
         </scene>
         <!--PriceVC-->
         <scene sceneID="2Yu-Tu-EYt">
@@ -3260,7 +3262,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tm2-sX-Q9F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3167" y="2988"/>
+            <point key="canvasLocation" x="3248" y="2450"/>
         </scene>
         <!--Delegate-->
         <scene sceneID="wmK-sZ-YBM">
@@ -3624,7 +3626,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t8N-J1-qLs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3881" y="2285"/>
+            <point key="canvasLocation" x="4003" y="2472"/>
         </scene>
     </scenes>
     <resources>
