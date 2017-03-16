@@ -164,7 +164,7 @@ class DriveDetailsVC: UIViewController, MGLMapViewDelegate {
                     
                     // Get main VC.
                     let mainVC = self.navigationController?.viewControllers.first as! MainVC
-                    mainVC.unsortedDrives = mainVC.unsortedDrives + [self.drive]
+                    mainVC.unsortedDrives += [self.drive]
                     mainVC.changedUnsorted = true
                     print(self.navigationController!.viewControllers.count)
                     

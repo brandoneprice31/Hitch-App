@@ -61,6 +61,10 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Start with the user's upcoming drives.
         //unsortedDrives = Drive.getUsersDrivesDaysFromNow(userID: CoreDataAuthentication.getLoggedInUser()!, daysFromNow: daysAhead)
         
+        self.pullDrivesAndHitches()
+    }
+    
+    func pullDrivesAndHitches () {
         self.pauseViewWithAnimation(view: self.view, animationName: "spinner", text: "Loading drives and hitches...")
         API.getUsersDrives(token: User.getCurrentUser()!.token, completionHandler: {
             (response, driveList) in
@@ -98,7 +102,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         loadProfile()
         
         if changedUnsorted {
-            loadAllCellFromUnsortedLists()
+            pullDrivesAndHitches()
             changedUnsorted = false
         }
     }
