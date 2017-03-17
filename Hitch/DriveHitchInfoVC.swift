@@ -246,22 +246,34 @@ class DriveHitchInfoVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     // Hitch accepted.
     func hitchAccepted (hitchIndex : Int) {
         
-        // Perform API request to hitch on.
-        self.pauseViewWithAnimation(view: self.view, animationName: "spinner", text: "Hitching onto drive...")
-        API.acceptHitch(token: User.getCurrentUser()!.token, hitch: drive.hitches[hitchIndex], drive: drive, completionHandler: {
-            (response) in
-            
-            // Handle the response.
-            
-            DispatchQueue.main.sync () {
-                self.unPauseViewAndRemoveAnimation(view: self.view)
-                if response == URLResponse.Error {
-                    // Error.
-                } else {
-                    // Succuess
-                }
+        // First warn the user.
+        self.presentOkayCancelAlertView(title: "Are you sure?", message: "",
+            okayHandler: {
+                (alert) in
+                
+                // Perform API request to hitch on.
+                self.pauseViewWithAnimation(view: self.view, animationName: "spinner", text: "Hitching onto drive...")
+                API.acceptHitch(token: User.getCurrentUser()!.token, hitch: self.drive.hitches[hitchIndex], drive: self.drive, completionHandler: {
+                    (response) in
+                    
+                    // Handle the response.
+                    
+                    DispatchQueue.main.sync () {
+                        self.unPauseViewAndRemoveAnimation(view: self.view)
+                        if response == URLResponse.Error {
+                            // Error.
+                            self.presentNormalAlertView(title: "Error", message: "Check your internet connection?")
+                        } else {
+                            // Success
+                            self.gotoMainNav(changed: true)
+                        }
+                    }
+                })
             }
-        })
+            
+            , cancelHandler: nil)
+        
+        
     }
     
     // Hitch declined.
@@ -269,11 +281,23 @@ class DriveHitchInfoVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         print(hitchIndex)
     }
     
-    // Back button clicked.
-    @IBAction func backButtonClicked(_ sender: Any) {
+    // Go to main nav.
+    func gotoMainNav (changed: Bool) {
+        
+        if changed {
+            let mainIndex = (self.navigationController?.viewControllers.index(of: self))! - 1
+            let main = self.navigationController?.viewControllers[mainIndex] as! MainVC
+            main.changedUnsorted = true
+        }
+        
         let transition = Design.slidePushFromLeftTransition()
         self.navigationController?.view.layer.add(transition, forKey: nil)
         _ = self.navigationController?.popViewController(animated: false)
+    }
+    
+    // Back button clicked.
+    @IBAction func backButtonClicked(_ sender: Any) {
+        gotoMainNav(changed: false)
     }
 
 }

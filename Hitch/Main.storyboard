@@ -557,7 +557,7 @@
                                                 <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Tap the car to create drive." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWE-IB-jxe">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Tap the car to create a drive." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWE-IB-jxe">
                                                 <rect key="frame" x="8" y="107" width="227" height="54"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" red="0.098495922979999997" green="0.17883136869999999" blue="0.26193091270000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

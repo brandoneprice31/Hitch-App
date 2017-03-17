@@ -128,26 +128,34 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         allCells = [String]()
         drives = [Drive]()
+        pendingDrives = [Drive]()
+        pendingHitches = [Hitch]()
         hitches = [Hitch]()
         cities = [String]()
         
-        // Go through each drive and push it into drives.
+        // CONSTRUCT DRIVES
         for drive in self.unsortedDrives {
             
-            // Find the drives who have hitches that are pending.
-            for hitch in drive.hitches {
-                
-                if !hitch.accepted {
-                    // If it hasn't been accepted yet, then we need to add this drive to the pending array.
-                    let driveCopy = drive.copy()
-                    driveCopy.hitches = [hitch]
-                    pendingDrives.append(driveCopy)
+            if drive.hitches.count > 0 {
+                // Find the drives who have hitches that are pending.
+                for hitch in drive.hitches {
+                    
+                    if !hitch.accepted {
+                        // If it hasn't been accepted yet, then we need to add this drive to the pending array.
+                        let driveCopy = drive.copy()
+                        driveCopy.hitches = [hitch]
+                        pendingDrives.append(driveCopy)
+                    } else {
+                        // Append upcoming drives.
+                        let upComingDrivesFromDrive = drive.getDriveCopies(startDateTime: DateTime.currentDateTime, endDateTime: DateTime.currentDateTime.add(years: 0, months: 0, days: 10, hours: 0, minutes: 0))
+                        drives += upComingDrivesFromDrive
+                    }
                 }
+            } else {
+                // Append upcoming drives.
+                let upComingDrivesFromDrive = drive.getDriveCopies(startDateTime: DateTime.currentDateTime, endDateTime: DateTime.currentDateTime.add(years: 0, months: 0, days: 10, hours: 0, minutes: 0))
+                drives += upComingDrivesFromDrive
             }
-            
-            // Append upcoming drives.
-            let upComingDrivesFromDrive = drive.getDriveCopies(startDateTime: DateTime.currentDateTime, endDateTime: DateTime.currentDateTime.add(years: 0, months: 0, days: 10, hours: 0, minutes: 0))
-            drives += upComingDrivesFromDrive
         }
         
         
@@ -253,7 +261,10 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     allCells.append("SeparatorWhite 8")
                     allCells.append("DayCell " + (currentDateTime.longWeekDay()) + " " + currentDateTime.abbreviatedDate())
                     
-                    if drive != nil {
+                    if drive != nil && drive!.hitches.count > 0 && drive!.hitches.first!.accepted {
+                        let index = drives.index(where: {(x) -> Bool in return x.startDateTime.date == drive!.startDateTime.date})
+                        allCells.append("HitchedDriveCell \(index!) notPending")
+                    } else if drive != nil {
                         let index = drives.index(where: {(x) -> Bool in return x.startDateTime.date == drive!.startDateTime.date})
                         allCells.append("DriveCell \(index!) notPending")
                     } else {
