@@ -14,7 +14,7 @@ import MapboxDirections
 class HikeSearchResultsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MGLMapViewDelegate {
     
     // Other.
-    var monthDateTime = DateTime.currentDateTime.startOfMonth()
+    var monthDateTime = DateTime.currentDateTime
     @IBOutlet var monthLabel: UILabel!
     var startLocation : Place!
     var endLocation : Place!
@@ -182,7 +182,13 @@ class HikeSearchResultsVC: UIViewController, UITableViewDelegate, UITableViewDat
 
     @IBAction func backMonthButtonClicked(_ sender: Any) {
         
-        let nextMonth = monthDateTime.add(years: 0, months: -1, days: 0, hours: 0, minutes: 0)
+        var nextMonth : DateTime
+        
+        if monthDateTime.add(years: 0, months: -1, days: 0, hours: 0, minutes: 0).month == DateTime.currentDateTime.month {
+            nextMonth = DateTime.currentDateTime
+        } else {
+            nextMonth = monthDateTime.add(years: 0, months: -1, days: 0, hours: 0, minutes: 0)
+        }
         
         if nextMonth.year < DateTime.currentDateTime.year ||  (nextMonth.year == DateTime.currentDateTime.year && nextMonth.month < DateTime.currentDateTime.month) {
             // Past month warn the user.
@@ -198,8 +204,8 @@ class HikeSearchResultsVC: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBAction func forwardMonthButtonClicked(_ sender: Any) {
         
-        let nextMonth = monthDateTime.add(years: 0, months: 1, days: 0, hours: 0, minutes: 0)
-        self.monthDateTime = nextMonth
+        let nextMonth = monthDateTime.startOfMonth().add(years: 0, months: 1, days: 0, hours: 0, minutes: 0)
+        self.monthDateTime = nextMonth.startOfMonth()
         
         // Perform search query.
         self.performDriveSearch()

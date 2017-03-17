@@ -87,14 +87,14 @@ class Drive : Any {
             return [self]
         }
         
-        var adjustedStart : DateTime
+        let adjustedStart : DateTime = startDateTime
         
-        // Check to see if the specified start date time is before the actual start date time.
+        /* Check to see if the specified start date time is before the actual start date time.
         if self.startDateTime.isDaysAheadOf(dateTime2: startDateTime){
             adjustedStart = self.startDateTime
         } else {
             adjustedStart = startDateTime
-        }
+        }*/
         
         // Get the start date time interator.
         var driveList = [Drive]()

@@ -15,11 +15,11 @@
             <rect key="frame" x="0.0" y="0.0" width="501" height="726"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fsk-vn-u2s">
+                <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Fsk-vn-u2s">
                     <rect key="frame" x="0.0" y="163" width="501" height="400"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kangaroo" translatesAutoresizingMaskIntoConstraints="NO" id="uEs-CU-4Yd">
-                            <rect key="frame" x="80" y="10" width="341" height="294"/>
+                            <rect key="frame" x="40" y="10" width="421" height="294"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright (c) 2017 Kangaroo co. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8ie-xW-0ye">
                             <rect key="frame" x="50" y="380" width="401" height="20"/>
@@ -36,7 +36,7 @@
                                 <constraint firstAttribute="height" constant="60" id="EWI-ig-PZR"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="47"/>
-                            <nil key="textColor"/>
+                            <color key="textColor" red="0.098495922979999997" green="0.17883136869999999" blue="0.26193091270000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -49,8 +49,8 @@
                         <constraint firstAttribute="trailing" secondItem="1Zx-at-w6L" secondAttribute="trailing" constant="8" id="k0J-oH-cAI"/>
                         <constraint firstItem="1Zx-at-w6L" firstAttribute="leading" secondItem="Fsk-vn-u2s" secondAttribute="leading" constant="8" id="mvp-R3-lWi"/>
                         <constraint firstItem="8ie-xW-0ye" firstAttribute="leading" secondItem="Fsk-vn-u2s" secondAttribute="leading" constant="50" id="oIG-SG-vBc"/>
-                        <constraint firstAttribute="trailing" secondItem="uEs-CU-4Yd" secondAttribute="trailing" constant="80" id="ozp-Qg-Xob"/>
-                        <constraint firstItem="uEs-CU-4Yd" firstAttribute="leading" secondItem="Fsk-vn-u2s" secondAttribute="leading" constant="80" id="umP-1S-dan"/>
+                        <constraint firstAttribute="trailing" secondItem="uEs-CU-4Yd" secondAttribute="trailing" constant="40" id="ozp-Qg-Xob"/>
+                        <constraint firstItem="uEs-CU-4Yd" firstAttribute="leading" secondItem="Fsk-vn-u2s" secondAttribute="leading" constant="40" id="umP-1S-dan"/>
                         <constraint firstItem="uEs-CU-4Yd" firstAttribute="top" secondItem="Fsk-vn-u2s" secondAttribute="top" constant="10" id="zTH-8u-H6E"/>
                     </constraints>
                 </view>
