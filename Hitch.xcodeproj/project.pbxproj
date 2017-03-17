@@ -46,6 +46,8 @@
 		A8F104CC1E3FCA0600EFCF65 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F104CB1E3FCA0500EFCF65 /* Design.swift */; };
 		A8F8C7BE1E54A3350015F7A7 /* MainVCCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F8C7BD1E54A3350015F7A7 /* MainVCCells.swift */; };
 		A8F8C7C01E5A48BA0015F7A7 /* ThreadingOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F8C7BF1E5A48BA0015F7A7 /* ThreadingOperator.swift */; };
+		A8FE69521E7B15E60035C84B /* DriveHitchInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FE69511E7B15E60035C84B /* DriveHitchInfoVC.swift */; };
+		A8FE69541E7B3F5C0035C84B /* DriveHitchInfoCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FE69531E7B3F5C0035C84B /* DriveHitchInfoCells.swift */; };
 		D2360725A3CF653241037E62 /* Pods_HitchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AB04A7B4ABC9E2856A2761 /* Pods_HitchTests.framework */; };
 		F47029F61A7F27DB00E30A3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47029F51A7F27DB00E30A3C /* AppDelegate.swift */; };
 		F47029FD1A7F27DB00E30A3C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F47029FC1A7F27DB00E30A3C /* Images.xcassets */; };
@@ -110,6 +112,8 @@
 		A8F104CB1E3FCA0500EFCF65 /* Design.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
 		A8F8C7BD1E54A3350015F7A7 /* MainVCCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVCCells.swift; sourceTree = "<group>"; };
 		A8F8C7BF1E5A48BA0015F7A7 /* ThreadingOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadingOperator.swift; sourceTree = "<group>"; };
+		A8FE69511E7B15E60035C84B /* DriveHitchInfoVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriveHitchInfoVC.swift; sourceTree = "<group>"; };
+		A8FE69531E7B3F5C0035C84B /* DriveHitchInfoCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriveHitchInfoCells.swift; sourceTree = "<group>"; };
 		BE14E30C72EE91B9AFD5317F /* Pods_Hitch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hitch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F47029F01A7F27DB00E30A3C /* Hitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F47029F41A7F27DB00E30A3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -285,6 +289,8 @@
 				A87F3ABD1E4120060023C314 /* LocationSearchVC.swift */,
 				A87A603A1E731DBA003F8962 /* ProfileVC.swift */,
 				A87A603C1E731DEC003F8962 /* ProfileVCCells.swift */,
+				A8FE69511E7B15E60035C84B /* DriveHitchInfoVC.swift */,
+				A8FE69531E7B3F5C0035C84B /* DriveHitchInfoCells.swift */,
 			);
 			name = MainNav;
 			sourceTree = "<group>";
@@ -582,9 +588,11 @@
 				F47029F61A7F27DB00E30A3C /* AppDelegate.swift in Sources */,
 				A870D9A51E4B915700BAA3C3 /* DriveCreateVC.swift in Sources */,
 				A8F8C7BE1E54A3350015F7A7 /* MainVCCells.swift in Sources */,
+				A8FE69541E7B3F5C0035C84B /* DriveHitchInfoCells.swift in Sources */,
 				A8D3E0F51E4212790045539D /* HikeSearchResultsVC.swift in Sources */,
 				A805B0461E4D3AAE0077FE59 /* Mapping.swift in Sources */,
 				A8E4DF291E3E3ACA007DC2A0 /* ProfileImage.swift in Sources */,
+				A8FE69521E7B15E60035C84B /* DriveHitchInfoVC.swift in Sources */,
 				A87F3ABC1E4101EA0023C314 /* UIViewController+extension.swift in Sources */,
 				A8E4DF301E3E429E007DC2A0 /* API.swift in Sources */,
 				A8D3E0F71E421BD30045539D /* CustomAnnotationView.swift in Sources */,

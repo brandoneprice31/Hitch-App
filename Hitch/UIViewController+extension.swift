@@ -49,7 +49,7 @@ extension UIViewController {
         view.isUserInteractionEnabled = false
         
         // Add Dim view.
-        let dimViewColor = UIColor(white: 0.0, alpha: 0.25)
+        let dimViewColor = UIColor(white: 0.0, alpha: 0.0)
         let dimView = UIView(frame: self.view.frame)
         dimView.backgroundColor = dimViewColor
         dimView.restorationIdentifier = "dimView"
@@ -59,7 +59,7 @@ extension UIViewController {
         miniView.frame = CGRect(x: 0.0, y: 0.0, width: 100, height: 125)
         miniView.center = dimView.center
         miniView.layer.cornerRadius = 10.0
-        miniView.backgroundColor = UIColor.white
+        miniView.backgroundColor = UIColor.clear
         dimView.addSubview(miniView)
         
         let label = UILabel()
@@ -69,6 +69,7 @@ extension UIViewController {
         label.frame.size = CGSize(width: 84.0, height: 21.0)
         label.frame.origin.y = miniView.bounds.height - 8.0 - label.frame.height
         label.frame.origin.x = 8.0
+        label.alpha = 0.0
         miniView.addSubview(label)
         
         if animationName != "spinner" {

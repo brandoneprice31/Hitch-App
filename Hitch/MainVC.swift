@@ -222,7 +222,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             for hitchIndex in Array(0..<pendingHitches.count) {
                 
-                allCells.append("HitchCell \(hitchIndex)")
+                allCells.append("HitchCell \(hitchIndex) pending")
                 allCells.append("SeparatorWhite 8")
             }
         }
@@ -442,6 +442,53 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             return cell!
         }
     }
+    
+    // Did select row.
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let cellComponents = allCells[indexPath.row].components(separatedBy: " ")
+        let cellType = cellComponents[0]
+        
+        if cellType == "HitchCell" {
+            
+            let hitchIndex = Int(cellComponents[1])!
+            
+            let pending = cellComponents[2] == "pending"
+            
+            if pending {
+                let hitch = self.pendingHitches[hitchIndex]
+                
+                // Goto drive hitch info vc.
+                let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "DriveHitchInfoVC") as! DriveHitchInfoVC
+                nextVC.drive = hitch.drive
+                nextVC.hitch = hitch
+                let transition = Design.slidePushFromRightTransition()
+                self.navigationController?.view.layer.add(transition, forKey: nil)
+                self.navigationController?.pushViewController(nextVC, animated: false)
+            }
+            
+            
+        } else if cellType == "HitchedDriveCell" {
+            
+            let driveIndex = Int(cellComponents[1])!
+            let pending = cellComponents[2] == "pending"
+            
+            if pending {
+                
+                let drive = self.pendingDrives[driveIndex]
+                
+                // Goto drive hitch info vc.
+                let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "DriveHitchInfoVC") as! DriveHitchInfoVC
+                nextVC.drive = drive
+                let transition = Design.slidePushFromRightTransition()
+                self.navigationController?.view.layer.add(transition, forKey: nil)
+                self.navigationController?.pushViewController(nextVC, animated: false)
+                
+            }
+        }
+    }
+    
+    
     
     // Settings Button clicked.
     @IBAction func settingsButtonClicked(_ sender: Any) {
